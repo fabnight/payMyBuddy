@@ -13,7 +13,7 @@ import com.payMyBuddy.service.AppUserService;
 import com.payMyBuddy.service.BankAccountService;
 
 @SpringBootApplication
-public class PayMyBuddyApplication implements CommandLineRunner {
+public class PayMyBuddyApplication  {
 
 	@Autowired
 	private AppUserService appUserService;
@@ -26,16 +26,16 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 		SpringApplication.run(PayMyBuddyApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-		Iterable<AppUser> appUsers = appUserService.getUsers();
-		appUsers.forEach(Appuser -> System.out.println(Appuser.getLastName()));
-
-		Iterable<AppTransaction> appTransactions = appTransactionService.getAppTransactions();
-		appTransactions.forEach(AppTransaction -> System.out.println(AppTransaction.getAmount()));
-
-		Iterable<BankAccount> bankAccounts = bankAccountService.getBankAccounts();
-		bankAccounts.forEach(BankAccount -> System.out.println(BankAccount.getBankAccountNb()));
-	}
+//	@Override
+//	public void run(String... args) throws Exception {
+//		Iterable<AppUser> appUsers = appUserService.getUsers();
+//		appUsers.forEach(Appuser -> System.out.println(Appuser.getLastName()));
+//
+//		Iterable<AppTransaction> appTransactions = appTransactionService.getAppTransactions();
+//		appTransactions.forEach(AppTransaction -> System.out.println(AppTransaction.getAmount()));
+//
+//		Iterable<BankAccount> bankAccounts = bankAccountService.getBankAccounts();
+//		bankAccounts.forEach(BankAccount -> System.out.println(BankAccount.getBankAccountNb()));
+//	}
 
 }
