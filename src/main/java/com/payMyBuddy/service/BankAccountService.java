@@ -1,7 +1,5 @@
 package com.payMyBuddy.service;
 
-import java.math.BigDecimal;
-
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,7 @@ public class BankAccountService {
 	public String save(String email) {
 	   
 	    BankAccount account = new BankAccount();
-	    account.setBalance(new Float(0));
+	    account.setBalance(null);
 	    account.setHolder(email);
 	    account.setBankAccountNb("PMB1111111111");
 	    bankAccountRepository.save(account);
