@@ -23,43 +23,49 @@ public class AppTransactionService {
 	
 	@Autowired
 	private BankAccountRepository bankAccountRepository;
-
+	
+	
 	public Iterable<AppTransaction> getAppTransactions() {
 		return appTransactionRepository.findAll();
 
 	}
 
 	// method to transfer money to 3rd party
-	public String savePayment(String bankAccountNumber) {
-		Float transactionAmount = null;
-		Float transactionFees = (float) (Math.round(transactionAmount * transactionConstants.commission * 100.0)
+	public AppTransaction savePayment(String bankAccountNumber) {
+		
+		AppTransaction appTransaction = new AppTransaction();
+		
+		Float transactionAmount = (float) 80.00;
+		Float transactionFees = (float) (Math.round(transactionAmount * TransactionConstants.commission * 100.0)
 				/ 100.0);
 
 //check if bankAmount balance is >= transactionAMount+tansactionFees
-		if (bankAccountRepository.getBalance() >= transactionAmount + transactionFees) {
-			bankAccount.setBalance(bankAccount.getBalance() - transactionAmount - transactionFees);
+//		if (bankAccountRepository.getBalance() >= transactionAmount + transactionFees) {
+//			bankAccount.setBalance(bankAccount.getBalance() - transactionAmount - transactionFees);
 			appTransaction.setAmount(transactionAmount);
 			appTransaction.setFees(transactionFees);
-			appTransaction.setOperationDate(transactionConstants.transactiondate);
+			appTransaction.setOperationDate(TransactionConstants.transactiondate);
 			appTransaction.setOperationType(null);
 			appTransaction.setOperationDescription("payment");
 			appTransaction.setReceiverBankAccountNb(null);
 			appTransaction.setSenderBankAccountNb(null);
 
-			return null;
+			return appTransaction;
 		}
-		return "your account is not sufficiently funded";
-	}
+//		return "your account is not sufficiently funded";
+//	}
 
 	// method to provide money from BankAccount to AppAccount
 	public String fundAppAccount() {
+		
+		AppTransaction appTransaction = new AppTransaction();
 		Float transactionAmount = null;
-
+//////////
 		if (transactionAmount != null) {
 			bankAccount.setBalance(bankAccount.getBalance() + transactionAmount);
 			appTransaction.setAmount(transactionAmount);
 			appTransaction.setFees(0);
-			appTransaction.setOperationDate(transactionConstants.transactiondate);
+			appTransaction.setOperationDate(TransactionConstants.transactiondate);
 			appTransaction.setOperationType(null);
 			appTransaction.setOperationDescription("fund");
 			appTransaction.setReceiverBankAccountNb(null);
@@ -74,15 +80,16 @@ public class AppTransactionService {
 	public String savewithdraw() {
 		Float transactionAmount = null;
 
-		Float transactionFees = (float) (Math.round(transactionAmount * transactionConstants.commission * 100.0)
+		Float transactionFees = (float) (Math.round(transactionAmount * TransactionConstants.commission * 100.0)
 				/ 100.0);
 
 //check if bankAmount balance is >= transactionAMount+tansactionFees
+		AppTransaction appTransaction = new AppTransaction();
 		if (bankAccount.getBalance() >= transactionAmount + transactionFees) {
 			bankAccount.setBalance(bankAccount.getBalance() - transactionAmount - transactionFees);
 			appTransaction.setAmount(transactionAmount);
 			appTransaction.setFees(transactionFees);
-			appTransaction.setOperationDate(transactionConstants.transactiondate);
+			appTransaction.setOperationDate(TransactionConstants.transactiondate);
 			appTransaction.setOperationType(null);
 			appTransaction.setOperationDescription("withdraw");
 			appTransaction.setReceiverBankAccountNb(null);

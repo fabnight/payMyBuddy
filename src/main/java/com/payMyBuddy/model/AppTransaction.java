@@ -37,7 +37,7 @@ public class AppTransaction {
 	private String operationType;
 	
 	@Column
-	private Date operationDate;
+	private String operationDate;
 
 	@Column
 	private Float amount;
@@ -108,11 +108,11 @@ public class AppTransaction {
 		this.operationType = operationType;
 	}
 
-	public Date getOperationDate() {
+	public String getOperationDate() {
 		return operationDate;
 	}
 
-	public void setOperationDate(Date transactiondate) {
+	public void setOperationDate(String transactiondate) {
 		this.operationDate = transactiondate;
 	}
 }
