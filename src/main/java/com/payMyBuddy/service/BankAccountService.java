@@ -24,7 +24,7 @@ public class BankAccountService {
 	    BankAccount account = new BankAccount();
 	    account.setBalance(null);
 	    account.setHolder(email);
-	    account.setBankAccountNb("PMB1111111111");
+	    account.setIban("PMB1111111111");;
 	    bankAccountRepository.save(account);
 	    return "Your account is saved";
 	  }
@@ -35,7 +35,7 @@ public class BankAccountService {
 	    BankAccount account = new BankAccount();
 	   
 	    account.setHolder(null);
-	    account.setBankAccountNb(null);
+	    account.setIban(null);
 	    bankAccountRepository.save(account);
 	    return "Your account is saved";
 	  }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.payMyBuddy.model.BankAccount;
 
 @Repository
-public interface BankAccountRepository extends CrudRepository<BankAccount, String> {
+public interface BankAccountRepository extends CrudRepository<BankAccount, Integer> {
 
+	BankAccount findById(Long id);
 }

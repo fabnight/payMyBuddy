@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import com.payMyBuddy.model.AppTransaction;
 
-
 @Repository
 public interface AppTransactionRepository extends CrudRepository<AppTransaction, Integer>  {
 
