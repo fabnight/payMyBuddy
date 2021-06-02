@@ -14,15 +14,20 @@ public class AppUserService {
 	public Iterable<AppUser> getAppUsers(){
 		return appUserRepository.findAll();
 	}
-//	@Autowired
-//	private AppUser appUser;
-	
 
 	//Get
 	 
 	//post
 	//Check if already in DB
-	
+	public AppUser addAppUser(AppUser appUser) {
+		AppUser newAppUser = new AppUser();
+		newAppUser.setLastName("BERTRAND");
+		newAppUser.setFirstName("Jacques");
+		newAppUser.setEmail("jbertrand@gmail.com");
+		newAppUser.setPassword("BERTRAND99");
+		newAppUser.setIban("FR9999999999999999999999999");
+		return appUserRepository.save(newAppUser);		
+	}
 	//put
 	//Check if already in DB
 	

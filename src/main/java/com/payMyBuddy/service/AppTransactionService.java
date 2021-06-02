@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.payMyBuddy.dto.TransactionDto;
 import com.payMyBuddy.model.AppTransaction;
+import com.payMyBuddy.model.AppUser;
 import com.payMyBuddy.model.BankAccount;
 import com.payMyBuddy.repository.AppTransactionRepository;
 import com.payMyBuddy.repository.BankAccountRepository;
@@ -50,7 +51,9 @@ public class AppTransactionService {
 			appTransaction.setReceiverBankAccountNb(null);
 			appTransaction.setSenderBankAccountNb(null);
 
-			return appTransaction;
+			return appTransactionRepository.save(appTransaction);
+				
+			
 		}
 //		return "your account is not sufficiently funded";
 //	}

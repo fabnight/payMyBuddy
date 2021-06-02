@@ -40,6 +40,9 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 		appTransactions.forEach(AppTransaction -> System.out.println(AppTransaction.getAmount()));
 		
 		appTransactionService.savePayment("FR7612341234123412341234123");
+		
+				
+ 
 	}
 
 }
