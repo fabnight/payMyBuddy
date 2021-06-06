@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import com.payMyBuddy.model.AppTransaction;
 import com.payMyBuddy.model.AppUser;
 import com.payMyBuddy.model.BankAccount;
+import com.payMyBuddy.repository.BankAccountRepository;
 import com.payMyBuddy.service.AppTransactionService;
 import com.payMyBuddy.service.AppUserService;
 import com.payMyBuddy.service.BankAccountService;
@@ -23,6 +24,8 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 
 	@Autowired
 	private BankAccountService bankAccountService;
+	@Autowired
+	private BankAccountRepository bankAccountRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PayMyBuddyApplication.class, args);
@@ -39,8 +42,10 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 		Iterable<AppTransaction> appTransactions = appTransactionService.getAppTransactions();
 		appTransactions.forEach(AppTransaction -> System.out.println(AppTransaction.getAmount()));
 		
-		appTransactionService.savePayment("FR7612341234123412341234123");
-		
+		//appUserService.addAppUser("jdurand@gmail.com");
+		//appTransactionService.savePayment("FR7612341234123412341234123");
+		//appTransactionService.fundAppAccount("FR9999999999999999999999999");
+		System.out.println(bankAccountRepository.findById(2).get());
 				
  
 	}

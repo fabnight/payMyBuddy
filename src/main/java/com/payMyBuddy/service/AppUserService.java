@@ -10,6 +10,8 @@ import com.payMyBuddy.repository.AppUserRepository;
 public class AppUserService {
 	@Autowired
 	private AppUserRepository appUserRepository;
+	@Autowired
+	private BankAccountService bankAccountService;
 	
 	public Iterable<AppUser> getAppUsers(){
 		return appUserRepository.findAll();
@@ -19,13 +21,14 @@ public class AppUserService {
 	 
 	//post
 	//Check if already in DB
-	public AppUser addAppUser(AppUser appUser) {
+	public AppUser addAppUser(String email) {
 		AppUser newAppUser = new AppUser();
-		newAppUser.setLastName("BERTRAND");
+		newAppUser.setLastName("DURAND");
 		newAppUser.setFirstName("Jacques");
-		newAppUser.setEmail("jbertrand@gmail.com");
+		newAppUser.setEmail("jdurand@gmail.com");
 		newAppUser.setPassword("BERTRAND99");
 		newAppUser.setIban("FR9999999999999999999999999");
+		bankAccountService.save(email);
 		return appUserRepository.save(newAppUser);		
 	}
 	//put

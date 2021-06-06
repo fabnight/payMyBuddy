@@ -22,15 +22,15 @@ public class BankAccountService {
 	public String save(String email) {
 	   
 	    BankAccount account = new BankAccount();
-	    account.setBalance(null);
+	    account.setBalance((float)0);
 	    account.setHolder(email);
-	    account.setIban("PMB1111111111");;
+	    account.setIban("FR9999999999999999999999999");;
 	    bankAccountRepository.save(account);
 	    return "Your account is saved";
 	  }
 	
 	// Save a new providing Bank Account
-	public String save(BankAccount bankAccount, String email) {
+	public String saveExternalBankAccount(BankAccount bankAccount, String email) {
 		   
 	    BankAccount account = new BankAccount();
 	   
