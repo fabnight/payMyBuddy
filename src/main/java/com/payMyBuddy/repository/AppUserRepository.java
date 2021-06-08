@@ -10,5 +10,6 @@ import com.payMyBuddy.model.BankAccount;
 public interface AppUserRepository extends CrudRepository<AppUser, Integer> {
 	AppUser findByEmail(String email);
 	AppUser findById(int id);
+	AppUser findByEmailAndPassword(String email, String password);
 
 }

@@ -10,11 +10,18 @@ import com.payMyBuddy.repository.AppUserRepository;
 
 @Service
 public class AppUserService {
+	
 	@Autowired
 	private AppUserRepository appUserRepository;
 	@Autowired
 	private BankAccountService bankAccountService;
 
+	private AppUser connectedUser;
+	
+	public boolean login(String email, String password) {
+		return true;
+	}
+	
 	public Iterable<AppUser> getAppUsers() {
 		return appUserRepository.findAll();
 	}
@@ -24,6 +31,8 @@ public class AppUserService {
 	}
 	public AppUser getAppUserByEmail(String email) {
 		return appUserRepository.findByEmail(email);
+		
+		
 	}
 	// Get
 

@@ -43,16 +43,18 @@ public class AppTransactionService {
 	public AppTransaction savePayment(String bankAccountNumber) {
 		
 		AppTransaction appTransaction = new AppTransaction();
+		
 		BankAccount bankAccount = new BankAccount();
-		Float transactionAmount = (float) 90.00;
-		Float transactionFees = (float) (Math.round(transactionAmount * TransactionConstants.commission * 100.0)
+		Float transactionAmount = 90f;
+	
+		Float transactionFees = (float) (Math.round(transactionAmount * TransactionConstants.COMMISSION * 100.0)
 				/ 100.0);
 
 //check if bankAmount balance is >= transactionAMount+tansactionFees
 			bankAccount.setBalance(800 - transactionAmount - transactionFees);//bankAccount.getBalance()
 			appTransaction.setAmount(transactionAmount);
 			appTransaction.setFees(transactionFees);
-			appTransaction.setOperationDate(TransactionConstants.transactiondate);
+			appTransaction.setOperationDate(TransactionConstants.TRANSACTIONDATE);
 			appTransaction.setOperationType("payment");
 			appTransaction.setOperationDescription("payment");
 			appTransaction.setReceiverBankAccountNb("FR7612341234123412341234124");
