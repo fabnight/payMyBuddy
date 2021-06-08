@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+		integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<link href=signin.css rel="stylesheet">
+	<link href=home.css rel="stylesheet">
+
+
+	<title>Pay My Buddy </title>
+
+	<style>
+		body {
+			padding-top: 20px;
+			padding-bottom: 20px;
+		}
+
+		.special {
+			padding-top: 50px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- Navigation menu -->
+	<nav class="navbar navbar-expand ">
+		<div class="container-fluid">
+			<button class="btndisabled btn btn-success center-block disabled">Pay
+				My Buddy</button>
+			<div>
+				<ul class="nav navbar-right">
+					<li class="nav-item"><a class="nav-link active" href="home">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="transfer">Transfer</a></li>
+					<li class="nav-item"><a class="nav-link" href="registration">profile</a></li>
+					<li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+					<li class="nav-item" sec:authorize="isAuthenticated()">
+						<form th:action="@{/logout}" method="post">
+							<input class="nav-link btn btn-primary" type="submit" value="Log Off" />
+						</form>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<nav class="nav navbar-left bg-light">
+		<ul class="nav navbar-right">
+			<li class="nav-item"><a class="nav-link active" href="home">Home
+					/</a></li>
+		</ul>
+	</nav>
+	<!-- End Navigation menu -->
+
+
+
+
+	<div class="row mt-3 mb-1 justify-content-between">
+	<h1 th:text="'Hello '+${name}+'!'"> Hello user!<h1>
+		<div class="ml-4">
+			<span class="text-left">
+				<h4>Pay and Withdraw</h4>
+			</span>
+		</div>
+
+	</div>
+
+	<div class="row justify-content-center">
+		<div class=" col-md-12 col-md-offset-3 ">
+			<div class="card bg-light">
+				<div class="card-body text-center">
+
+					<div class="row">
+						<div class="col-3">
+							<div class="list-group" id="list-tab" role="tablist">
+								<p>Choose an option :</p>
+								<a class="list-group-item list-group-item-action  list-group-item-primary active"
+									id="list-home-list" data-toggle="list" href="#list-home" role="tab"
+									aria-controls="home">Fund your account</a> <a
+									class="list-group-item list-group-item-action list-group-item-primary"
+									id="list-withdraw-list" data-toggle="list" href="#list-withdraw" role="tab"
+									aria-controls="withdraw">Withdraw</a>
+
+							</div>
+						</div>
+						<div class="col-9 ">
+							<div class="tab-content row justify-content-between" id="nav-tabContent">
+
+								<!-- onglet bank transfer -->
+								<div class="tab-pane fade show active " id="list-home" role="tabpanel"
+									aria-labelledby="list-home-list">
+
+									<p>Please complete amount, then click on "Pay":</p>
+									<form class="form-inline" th:action="@{/home}" method="POST"
+										th:object="${transaction}">
+										<div class="mr-2">
+											<!--  <select class="form-control " required="required" autofocus="autofocus">
+													<option disabled="disabled">choose a bank Account</option>
+													<option th:value="${bankAccount.holder}" th:text="${bankAccount.holder}"></option>
+												</select>-->
+											
+										<div class="mr-2 w-10" th:if="${bankAccount != null}">
+											<label for="amount"></label> <input class="form-control " type="text"
+												value="0" id="amount" name="amount" required autofocus="autofocus">
+										</div>
+										<div class="mr-1">€</div>
+										<div class="mr-1">
+											<button type="submit" class="btn  btn-block btn-success">Pay</button>
+										</div>
+										<div class="mr-1">
+											<!-- Button -->
+											<button type="button" class="btn btn-primary" data-toggle="modal"
+												data-target="#popup">Add bank
+												acount</button>
+										</div>
+									</form>
+
+
+
+									<!-- Pop-up add bank details -->
+									<div id="popup" class="modal">
+										<div class="modal-dialog modal-dialog-centered">
+											<div class="modal-content">
+												<div class="modal-header">
+													<p>Bank details</p>
+												</div>
+												<div class="modal-body">
+													<form th:action="@{/home/addBankAccount}" method="POST">
+														<div class="form-group">
+															
+															<div class="form-group">
+																<label for="iban">Iban</label> <input type="text"
+																	class="form-control" id="iban" placeholder="iban"
+																	field="*{iban}" name="iban" required
+																	autofocus="autofocus">
+
+																<div class="form-group">
+																	<label for="holder">Holder</label> <input
+																		type="text" class="form-control" id="holder"
+																		placeholder="holder" 
+																		name="holder" required autofocus="autofocus">
+																</div>
+
+																<p></p>
+
+																<button type="submit" class="btn btn-primary">Submit</button>
+
+													</form>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary"
+														data-dismiss="modal">Cancel</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+								<!-- onglet withdraw -->
+								<div class="tab-pane fade" id="list-withdraw" role="tabpanel"
+									aria-labelledby="list-withdraw-list">
+									<p>Please complete amount and withdraw button :</p>
+									<form class="form-inline">
+										<div class="mr-2 w-10">
+
+
+											<div class="mr-2 w-10" >
+												<label for="example-number-input"></label> <input class="form-control "
+													type="number" value="0" id="example-number-input">
+											</div>
+											<div class="mr-2">
+												<button type="submit"
+													class="btn  btn-block btn-success">Withdraw</button>
+											</div>
+
+									</form>
+
+									<!-- Pop-up add bank details -->
+									<div id="popup2" class="modal">
+										<div class="modal-dialog modal-dialog-centered">
+											<div class="modal-content">
+												<div class="modal-header">
+													<p>Bank details</p>
+												</div>
+												<div class="modal-body">
+													<form th:action="@{/home/addBankAccount}" method="POST">
+
+
+														<div class="form-group">
+
+															<div class="form-group">
+																<label for="iban">Iban</label> <input type="text"
+																	class="form-control" id="iban" placeholder="iban"
+																	name="iban" required
+																	autofocus="autofocus">
+															</div>
+
+															<div class="form-group">
+																<label for="holder">Holder</label> <input type="text"
+																	class="form-control" id="holder"
+																	placeholder="holder" 
+																	name="holder" required autofocus="autofocus">
+															</div>
+
+															<p></p>
+
+															<button type="submit" class="btn btn-primary">Add
+																details</button>
+
+													</form>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary"
+														data-dismiss="modal">Cancel</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

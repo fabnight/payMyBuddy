@@ -33,6 +33,9 @@ public class AppTransactionService {
 	
 	public Iterable<AppTransaction> getAppTransactions() {
 		return appTransactionRepository.findAll();
+	}
+	public Optional<AppTransaction> getAppTransactionById(Integer id) {
+		return appTransactionRepository.findById(id);
 
 	}
 
@@ -80,7 +83,7 @@ public class AppTransactionService {
 			appTransaction.setReceiverBankAccountNb("FR7612341234123412341234124");
 			appTransaction.setSenderBankAccountNb("FR9999999999999999999999999");
 
-			BankAccount accountToUpdate = bankAccount.getId(2);
+			Optional<BankAccount> accountToUpdate = bankAccountRepository.findById(2);
 			accountToUpdate.setBalance(accountToUpdate.getBalance()+ transactionAmount);
 			return appTransactionRepository.save(appTransaction);
 					}

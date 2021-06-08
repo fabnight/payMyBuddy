@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>connection</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <!-- success message -->
+            <div th:if="${param.success}">
+                <div class="alert alert-info">You've successfully registered a connection!</div>
+            </div>
+
+            <h2 class="offset-md-5 pb-3">Registration of contact</h2>
+        </div>
+        <form th:action="@{/contact}" method="post" th:object="${contact}">
+            <div class="row">
+
+                
+
+                <div class="col-md-4 "></div>
+                <div class="col-md-4 "><label class="control-label pt-4" for="lastName"> Name </label></div>
+                <div class="col-md-4 "></div>
+
+                <div class="col-md-4 "></div>
+                <div class="col-md-4 "><input id="lastName" class="form-control pt-4 "
+                                              required autofocus="autofocus"/></div>
+                <div class="col-md-4 "></div>
+
+                <div class="col-md-4 "></div>
+                <div class="col-md-4 "><label class="control-label pt-4 " for="email"> Email </label></div>
+                <div class="col-md-4 "></div>
+
+                <div class="col-md-4 "></div>
+                <div class="col-md-4 "><input id="email" class="form-control pt-4 " required
+                                              autofocus="autofocus"/></div>
+                <div class="col-md-4 "></div>
+
+                <div class="col-md-4 "></div>
+                <div class="col-md-4 "><label class="control-label pt-4"> Bank </label></div>
+                <div class="col-md-4 "></div>
+
+                <div class="col-md-4 "></div>
+                <div class="col-md-4 ">
+                    <select class="form-control pt-4" >
+                       
+                    </select>
+                </div>
+                <div class="col-md-4 "><a href="bankregistration" class="pt-4">Saisir une nouvelle banque</a></div>
+
+                <div class="col-md-4 "></div>
+                <div class="col-md-4 "><label class="control-label pt-4" for="iban"> Iban </label></div>
+                <div class="col-md-4 "></div>
+
+                <div class="col-md-4 "></div>
+                <div class="col-md-4 "><input id="iban" class="form-control pt-4"  required
+                                              autofocus="autofocus"/></div>
+                <div class="col-md-4 "></div>
+            </div>
+
+            <div class="row pt-4">
+
+                <div class="col-md-4"></div>
+                <div class="col-md-4 ">
+                    <button type="submit" class="btn btn-success offset-md-5 ">Register</button>
+                </div>
+                <div class="col-md-4 "></div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

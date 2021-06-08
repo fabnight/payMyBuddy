@@ -1,5 +1,7 @@
 package com.payMyBuddy.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +14,21 @@ public class AppUserService {
 	private AppUserRepository appUserRepository;
 	@Autowired
 	private BankAccountService bankAccountService;
-	
-	public Iterable<AppUser> getAppUsers(){
+
+	public Iterable<AppUser> getAppUsers() {
 		return appUserRepository.findAll();
 	}
 
-	//Get
-	 
-	//post
-	//Check if already in DB
+	public Optional<AppUser> getAppUserById(Integer Id) {
+		return appUserRepository.findById(Id);
+	}
+	public AppUser getAppUserByEmail(String email) {
+		return appUserRepository.findByEmail(email);
+	}
+	// Get
+
+	// post
+	// Check if already in DB
 	public AppUser addAppUser(String email) {
 		AppUser newAppUser = new AppUser();
 		newAppUser.setLastName("DURAND");
@@ -29,20 +37,18 @@ public class AppUserService {
 		newAppUser.setPassword("BERTRAND99");
 		newAppUser.setIban("FR9999999999999999999999999");
 		bankAccountService.save(email);
-		return appUserRepository.save(newAppUser);		
+		return appUserRepository.save(newAppUser);
 	}
-	//put
-	//Check if already in DB
-	
-	//Delete?
-	
-	//Add a contact in a user contacts list
+	// put
+	// Check if already in DB
+
+	// Delete?
+
+	// Add a contact in a user contacts list
 //		public void addANewContactToMyList(String email) {
 //		appUser.getEmail();
 //		
-		//check if the email exists in DB
-		//check if email is not yet in user's list
-		//appUser.getUserContacts();
-	}
-	
-
+	// check if the email exists in DB
+	// check if email is not yet in user's list
+	// appUser.getUserContacts();
+}

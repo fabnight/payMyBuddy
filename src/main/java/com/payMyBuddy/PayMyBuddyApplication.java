@@ -1,5 +1,7 @@
 package com.payMyBuddy;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -41,13 +43,18 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 
 		Iterable<AppTransaction> appTransactions = appTransactionService.getAppTransactions();
 		appTransactions.forEach(AppTransaction -> System.out.println(AppTransaction.getAmount()));
-		
-		//appUserService.addAppUser("jdurand@gmail.com");
-		//appTransactionService.savePayment("FR7612341234123412341234123");
-		//appTransactionService.fundAppAccount("FR9999999999999999999999999");
-		System.out.println(bankAccountRepository.findById(2).get());
-				
- 
+
+//		 appUserService.addAppUser("jdurand@gmail.com");
+//		 appTransactionService.savePayment("FR7612341234123412341234123");
+//		 appTransactionService.fundAppAccount("FR9999999999999999999999999");
+		Optional<AppUser> findAppUser = appUserService.getAppUserById(2);
+		AppUser appUser = findAppUser.get();
+		System.out.println(appUser.getLastName());
+		System.out.println(appUser.getIban());
+
+//		AppUser findAppUserByEmail = appUserService.getAppUserByEmail("fgarnier@hotmail.com");
+//		AppUser appUserEmail = findAppUserByEmail.get();
+//		System.out.println(appUserEmail.getIban());
 	}
 
 }
