@@ -24,25 +24,25 @@ public class AppTransaction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int transactionId;
 
-	@Column
+	@Column(length = 24)
 	private String senderBankAccountNb;
 
-	@Column
+	@Column(length = 24)
 	private String receiverBankAccountNb;
 
-	@Column
+	@Column(length = 80)
 	private String operationDescription;
 	
-	@Column
+	@Column(length = 50)
 	private String operationType;
 	
-	@Column
+	@Column(length = 20)
 	private String operationDate;
 
-	@Column
+	@Column(length = 20)
 	private Float amount;
 	
-	@Column
+	@Column(length = 20)
 	private Float fees;
 
 	public int getTransactionId() {

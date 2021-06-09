@@ -25,13 +25,13 @@ public class BankAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column
+	@Column(length = 27)
 	private String Iban;
 
-	@Column
+	@Column(length = 20)
 	private Float balance;
 
-	@Column
+	@Column(length = 80)
 	private String holder;
 
 	@ManyToMany(mappedBy = "bankAccounts")

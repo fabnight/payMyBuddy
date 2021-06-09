@@ -21,16 +21,33 @@
             <div class="col-md-5 offset-md-5 pt-3">
                 <button type="button" class="btn-success">Pay my buddy</button>
             </div>
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/home}" method="post">
                 <div style="width:300px;">
                     <div class="input-group offset-md-8	pt-5">
                         <span class="input-group-addon pt-2 pr-2"><i class="fas fa-envelope-square"></i></span>
-                        <input id="email" type="text" class="form-control" name="username" placeholder="Email">
+                        <input id="username" type="text" class="form-control" name="username" th:placeholder="Username">
                     </div>
                     <div class="input-group offset-md-8	pt-3">
                         <span class="input-group-addon pt-2 pr-2"><i class="fas fa-asterisk"></i></span>
-                        <input id="password" type="password" class="form-control" name="password"
-                               placeholder="password">
+                        <input id="password" type="password" class="form-control" name="password" th:placeholder="password">
+                    </div>
+                </div>
+                <div align="center" th:if="${param.error}">
+				<p style="font-size: 20; color: #FF1C19;">Username or password is invalid</p>
+			</div>
+                <div class="form-group pt-4 offset-md-5">
+                    <input type="submit" class="btn btn-primary btn-lg text-center" id="submit" name="_submit" value="Login">
+                </div>
+            </form>
+                <div style="width:300px;">
+                    <div class="input-group offset-md-8	pt-5">
+                        <span class="input-group-addon pt-2 pr-2"><i class="fas fa-envelope-square"></i></span>
+                        <input id="email" class="form-control" name="email" placeholder="Email" input type="text" th:name="email">
+                    </div>
+                    <div class="input-group offset-md-8	pt-3">
+                        <span class="input-group-addon pt-2 pr-2"><i class="fas fa-asterisk"></i></span>
+                        <input id="password" class="form-control" name="password"
+                               placeholder="password" input type="password" th:name="password">
                     </div>
                 </div>
                 <div class="form-group pt-4 offset-md-5">

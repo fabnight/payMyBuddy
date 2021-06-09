@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -30,23 +31,31 @@ public class AppUser {
 	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
 	private List<AppUser> userContacts = new ArrayList<>();
 
-	@Column
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "role_id")
+	private Role role;
+
+	public AppUser() {
+
+	}
+
+	@Column(length = 80)
 	private String lastName;
 
-	@Column
+	@Column(length = 80)
 	private String firstName;
 
-	@Column
+	@Column(name = "username", length = 65)
+	private String username;
+
+	@Column(length = 115)
 	private String email;
 
-	@Column
+	@Column(length = 80)
 	private String password;
 
-	@Column
+	@Column(length = 27)
 	private String iban;
-
-	@Column
-	private boolean logged;
 
 	public int getUserId() {
 		return userId;
@@ -96,15 +105,6 @@ public class AppUser {
 		this.iban = iban;
 	}
 
-	public boolean isLogged() {
-		return logged;
-	}
-
-	public void setLogged(boolean logged) {
-		this.logged = logged;
-
-	}
-
 	public List<BankAccount> getBankAccounts() {
 		return bankAccounts;
 	}
@@ -120,4 +120,21 @@ public class AppUser {
 	public void setUserContacts(List<AppUser> userContacts) {
 		this.userContacts = userContacts;
 	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 }
