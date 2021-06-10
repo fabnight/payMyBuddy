@@ -10,7 +10,7 @@ import com.payMyBuddy.model.AppUser;
 import com.payMyBuddy.model.BankAccount;
 import com.payMyBuddy.repository.BankAccountRepository;
 
-@DynamicUpdate
+
 @Service
 public class BankAccountService {
 	@Autowired
@@ -22,6 +22,12 @@ public class BankAccountService {
 
 	public Optional<BankAccount> getBankAccountById(Integer id) {
 		return bankAccountRepository.findById(id);
+	}
+	
+	public BankAccount getBankAccountByIban(String iban) {
+		return bankAccountRepository.findByIban(iban);
+		
+		
 	}
 
 	// create the App Account from user email

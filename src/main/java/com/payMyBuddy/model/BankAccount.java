@@ -26,7 +26,7 @@ public class BankAccount {
 	private int id;
 	
 	@Column(length = 27)
-	private String Iban;
+	private String iban;
 
 	@Column(length = 20)
 	private Float balance;
@@ -50,11 +50,11 @@ public class BankAccount {
 	}
 
 	public String getIban() {
-		return Iban;
+		return iban;
 	}
 
 	public void setIban(String iban) {
-		Iban = iban;
+		this.iban = iban;
 	}
 
 	public List<AppUser> getAppusers() {

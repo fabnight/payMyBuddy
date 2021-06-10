@@ -52,11 +52,14 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 
 //		 appUserService.addAppUser("jdurand@gmail.com");
 //		 appTransactionService.savePayment("FR7612341234123412341234123");
-//		 appTransactionService.fundAppAccount("FR9999999999999999999999999");
+//		 appTransactionService.fundAppAccount("FR7612341234123412341234123");
 //		Optional<AppUser> findAppUser = appUserService.getAppUserById(2);
 //		AppUser appUser = findAppUser.get();
 //		System.out.println(appUser.getLastName());
 //		System.out.println(appUser.getIban());
+		
+		AppTransaction appTransaction = appTransactionService.savePayment("FR7612341234123412341234123","FR8112341234123412341234124");
+		System.out.println(appTransaction);
 
 		AppUser appUserByEmail = appUserService.getAppUserByEmail("fgarnier@hotmail.com");
 			System.out.println(appUserByEmail.getEmail());

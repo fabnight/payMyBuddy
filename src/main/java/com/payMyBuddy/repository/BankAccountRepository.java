@@ -9,4 +9,5 @@ import com.payMyBuddy.model.BankAccount;
 public interface BankAccountRepository extends CrudRepository<BankAccount, Integer> {
 
 	BankAccount findById(Long id);
+	BankAccount findByIban(String iban);
 }
