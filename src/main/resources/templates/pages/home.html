@@ -1,81 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    <title>login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<title>login</title>
 </head>
+
 <body>
 
 
-<div class="container">
-<h2"Hello"+th:text="${name}"+"!"> Hello user!<h2>
-    <div style="height:200px;" class="row"></div>
-    <div class="row">
-        <div style="height:300px;width:100px;" class="col-md-8 offset-md-2 border rounded">
-            <div class="col-md-5 offset-md-5 pt-3">
-                <button type="button" class="btn-success">Pay my buddy</button>
-            </div>
-            <form th:action="@{/home}" method="post">
-                <div style="width:300px;">
-                    <div class="input-group offset-md-8	pt-5">
-                        <span class="input-group-addon pt-2 pr-2"><i class="fas fa-envelope-square"></i></span>
-                        <input id="username" type="text" class="form-control" name="username" th:placeholder="Username">
-                    </div>
-                    <div class="input-group offset-md-8	pt-3">
-                        <span class="input-group-addon pt-2 pr-2"><i class="fas fa-asterisk"></i></span>
-                        <input id="password" type="password" class="form-control" name="password" th:placeholder="password">
-                    </div>
-                </div>
-                <div align="center" th:if="${param.error}">
-				<p style="font-size: 20; color: #FF1C19;">Username or password is invalid</p>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-7 col-md-offset-2" align="justify-center">
+<div style="height:auto;width:auto;" class="col-md-6 offset-md-4 " align="auto">
+
+				<!-- success message -->
+				<div th:if="${param.success}">
+					<div class="alert alert-info">Welcome to you!
+					</div>
+				</div>
+
+
+				
+					<div class="offset-md-10" align="center">
+						<button class="btndisabled btn btn-success center-block disabled">Pay
+							My Buddy</button>
+					</div>
+
+					<form th:action="@{/home}"  th:object="${username}" method="POST">
+						<div style="width:auto;" align="center">
+
+							<div class="input-group offset-md-8	pt-5" align="center">
+								<span class="input-group-addon pt-2 pr-2"><i class="fas fa-envelope-square"></i></span>
+								<input id="username" type="text" class="form-control" name="username" 
+									th:placeholder="username">
+							</div>
+							<div class="input-group offset-md-8	pt-3" align="center">
+								<span class="input-group-addon pt-2 pr-2"><i class="fas fa-asterisk"></i></span>
+								<input id="password" type="password" class="form-control" name="password"
+									th:placeholder="password">
+							</div>
+							<div class="form-group pt-4 offset-md-10 " align="center">
+								<input type="submit" class="btn btn-primary btn-lg text-center" id="submit"
+									name="_submit" value="Login">
+							</div>
+							<div align="center" th:if="${param.error}">
+								<p style="font-size: 20; color: #FF1C19;" align="center">Username or password is invalid
+								</p>
+							</div>
+						</div>
+					</form>
+
+				</div>
 			</div>
-                <div class="form-group pt-4 offset-md-5">
-                    <input type="submit" class="btn btn-primary btn-lg text-center" id="submit" name="_submit" value="Login">
-                </div>
-            </form>
-                <div style="width:300px;">
-                    <div class="input-group offset-md-8	pt-5">
-                        <span class="input-group-addon pt-2 pr-2"><i class="fas fa-envelope-square"></i></span>
-                        <input id="email" class="form-control" name="email" placeholder="Email" input type="text" th:name="email">
-                    </div>
-                    <div class="input-group offset-md-8	pt-3">
-                        <span class="input-group-addon pt-2 pr-2"><i class="fas fa-asterisk"></i></span>
-                        <input id="password" class="form-control" name="password"
-                               placeholder="password" input type="password" th:name="password">
-                    </div>
-                </div>
-                <div class="form-group pt-4 offset-md-5">
-                    <input type="submit" class="btn btn-primary btn-lg text-center" id="submit" name="_submit"
-                           value="Login"/>
-                </div>
-            </form>
-
-        </div>
-    </div>
-    <div style="height:100px;" class="row off"></div>
-    <div class="helloText offset-md-4">
-        <p> Do not have an account? <a href="/registration" th:href="@{/registration}">Create your buddy account
-            here</a>.
-        <p>
-    </div>
-</div>
+		</div>
+	</div>
+	<div style="height:100px;" class="row off"></div>
+	<div class="helloText offset-md-4">
+		<p> Do not have an account? <a href="/registration" th:href="@{/registration}">Create your buddy
+				account
+				here</a>.
+		<p>
+	</div>
 
 
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
+
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
 </body>
+
 </html>

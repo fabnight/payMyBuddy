@@ -1,5 +1,6 @@
 package com.payMyBuddy;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,22 +53,31 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 
 //		 appUserService.addAppUser("jdurand@gmail.com");
 //		 appTransactionService.savePayment("FR7612341234123412341234123");
-//		 appTransactionService.fundAppAccount("FR7612341234123412341234123");
+	 //appTransactionService.fundAppAccount("fgarnier@hotmail.com",600.00f);
 //		Optional<AppUser> findAppUser = appUserService.getAppUserById(2);
 //		AppUser appUser = findAppUser.get();
 //		System.out.println(appUser.getLastName());
 //		System.out.println(appUser.getIban());
 		
-		AppTransaction appTransaction = appTransactionService.savePayment("FR7612341234123412341234123","FR8112341234123412341234124");
-		System.out.println(appTransaction);
+//		AppTransaction appTransaction = appTransactionService.savePayment("FR7612341234123412341234123","FR8112341234123412341234124");
+//		System.out.println(appTransaction);
 
-		AppUser appUserByEmail = appUserService.getAppUserByEmail("fgarnier@hotmail.com");
-			System.out.println(appUserByEmail.getEmail());
-		
-		AppUser appUserBypassword = appUserRepository.findByEmailAndPassword("fgarnier@hotmail.com", "azertyuiop");
-		System.out.println(appUserBypassword.getLastName());
-
+//		AppUser appUserByEmail = appUserService.getAppUserByEmail("fgarnier@hotmail.com");
+//			System.out.println(appUserByEmail.getEmail());
+//		
+//		AppUser appUserBypassword = appUserRepository.findByEmailAndPassword("fgarnier@hotmail.com", "azertyuiop");
+//		System.out.println(appUserBypassword.getLastName());
+//		
+//		AppUser user=appUserService.findByEmail("fgarnier@hotmail.com");
+//	System.out.println(user.getFirstName());
 	
-	}
-
+//	AppUser addContact=appUserService.addConnection("fgarnier@hotmail.com", "pmartin@gmail.com");
+//	System.out.println("user added");
+	
+//	ArrayList<AppTransaction> listOfTransactionsByUsername = new ArrayList<>();
+//	listOfTransactionsByUsername=appTransactionService.ListOfTransactions("FR7612341234123412341234123");
+//	System.out.println(listOfTransactionsByUsername);
+//	}
+	
+	}	
 }

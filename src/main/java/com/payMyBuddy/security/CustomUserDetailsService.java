@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException("username is empty");
 		}
  
-		AppUser user = appUserService.findByUsernameOrEmail(username);
+		AppUser user = appUserService.findByEmail(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("User " + username + " not found");
 		}

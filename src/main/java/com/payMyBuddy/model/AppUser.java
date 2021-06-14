@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.sun.istack.NotNull;
+
 @Entity
 @Table
 public class AppUser {
@@ -52,7 +54,8 @@ public class AppUser {
 	private String email;
 
 	@Column(length = 80)
-	private String password;
+	@NotNull
+	private String password ="a";
 
 	@Column(length = 27)
 	private String iban;

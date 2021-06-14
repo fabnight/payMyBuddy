@@ -27,6 +27,10 @@ public class Role implements Serializable {
 	 
 		}
 	 
+		public Role(Integer valueOf, AppUser user) {
+			// TODO Auto-generated constructor stub
+		}
+
 		public Integer getId() {
 			return id;
 		}

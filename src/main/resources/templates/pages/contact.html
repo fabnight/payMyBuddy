@@ -9,6 +9,33 @@
     <title>connection</title>
 </head>
 <body>
+<!-- Navigation menu -->
+	<nav class="navbar navbar-expand ">
+		<div class="container-fluid">
+			<button class="btndisabled btn btn-success center-block disabled">Pay
+				My Buddy</button>
+			<div>
+				<ul class="nav navbar-right">
+					<li class="nav-item"><a class="nav-link active" href="home">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="transfer">Transfer</a></li>
+					<li class="nav-item"><a class="nav-link" href="registration">profile</a></li>
+					<li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+					<li class="nav-item" sec:authorize="isAuthenticated()">
+						<form th:action="@{/logout}" method="post">
+							<input class="nav-link btn btn-primary" type="submit" value="Log Off" />
+						</form>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<nav class="nav navbar-left bg-light">
+		<ul class="nav navbar-right">
+			<li class="nav-item"><a class="nav-link active" href="home">Home
+					/</a></li>
+		</ul>
+	</nav>
+	<!-- End Navigation menu -->
 
 <div class="container">
     <div class="row">
@@ -44,27 +71,7 @@
                                               autofocus="autofocus"/></div>
                 <div class="col-md-4 "></div>
 
-                <div class="col-md-4 "></div>
-                <div class="col-md-4 "><label class="control-label pt-4"> Bank </label></div>
-                <div class="col-md-4 "></div>
-
-                <div class="col-md-4 "></div>
-                <div class="col-md-4 ">
-                    <select class="form-control pt-4" >
-                       
-                    </select>
-                </div>
-                <div class="col-md-4 "><a href="bankregistration" class="pt-4">Saisir une nouvelle banque</a></div>
-
-                <div class="col-md-4 "></div>
-                <div class="col-md-4 "><label class="control-label pt-4" for="iban"> Iban </label></div>
-                <div class="col-md-4 "></div>
-
-                <div class="col-md-4 "></div>
-                <div class="col-md-4 "><input id="iban" class="form-control pt-4"  required
-                                              autofocus="autofocus"/></div>
-                <div class="col-md-4 "></div>
-            </div>
+                            </div>
 
             <div class="row pt-4">
 

@@ -1,23 +1,27 @@
 package com.payMyBuddy.service;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.payMyBuddy.dto.BankAccountDto;
-import com.payMyBuddy.dto.TransactionDto;
+import com.payMyBuddy.dto.AppTransactionDto;
 import com.payMyBuddy.model.AppTransaction;
 import com.payMyBuddy.model.AppUser;
 import com.payMyBuddy.model.BankAccount;
 import com.payMyBuddy.repository.AppTransactionRepository;
+import com.payMyBuddy.repository.AppUserRepository;
 import com.payMyBuddy.repository.BankAccountRepository;
 import com.payMyBuddy.constants.TransactionConstants;
 
+@Transactional(rollbackOn = Exception.class)
 @Service
 public class AppTransactionService {
 
@@ -28,9 +32,14 @@ public class AppTransactionService {
 	private BankAccountRepository bankAccountRepository;
 	@Autowired
 	private BankAccountService bankAccountService;
+	
+	@Autowired
+	private AppUserRepository appUserRepository;
+	@Autowired
+	private AppUserService appUserService;
 
 	@Autowired
-	private BankAccountDto bankAccountDto;
+	private AppTransactionDto appTransactionDto;
 
 	public Iterable<AppTransaction> getAppTransactions() {
 		return appTransactionRepository.findAll();
@@ -65,17 +74,17 @@ public class AppTransactionService {
 			bankAccountRepository.save(receiverBankAccount);
 			return appTransactionRepository.save(appTransaction);
 		} else
-			System.out.println("pas assez de crédit, il vous reste " + senderBankAccount.getBalance());
+			System.out.println("pas assez de crédit, il vous reste " + senderBankAccount.getBalance()+"€");
 		return null;
 	}
 
 	// method to provide money from BankAccount to AppAccount
-	public AppTransaction fundAppAccount(String iban) {
-
+	public AppTransaction fundAppAccount(String username, Float transactionAmount) {
+		AppUser user = appUserService.findByEmail(username);
+		
 		AppTransaction appTransaction = new AppTransaction();
-		BankAccount bankAccount = bankAccountService.getBankAccountByIban(iban);
-		Float transactionAmount = (float) 600.00;
-
+		BankAccount bankAccount = bankAccountService.getBankAccountByIban(user.getIban());
+		
 		if (transactionAmount != null) {
 			bankAccount.setBalance(bankAccount.getBalance() + transactionAmount);
 			appTransaction.setAmount(transactionAmount);
@@ -83,11 +92,12 @@ public class AppTransactionService {
 			appTransaction.setOperationDate(TransactionConstants.TRANSACTIONDATE);
 			appTransaction.setOperationType("fund");
 			appTransaction.setOperationDescription("fund");
-			appTransaction.setReceiverBankAccountNb("FR7612341234123412341234124");
-			appTransaction.setSenderBankAccountNb("FR9999999999999999999999999");
+			appTransaction.setReceiverBankAccountNb(user.getIban());
+			appTransaction.setSenderBankAccountNb("FR7612341234123412341234999");
 			// Optional<BankAccount> accountToUpdate = bankAccountRepository.findById(2);
 			// accountToUpdate.setBalance(accountToUpdate.getBalance()+ transactionAmount);
 			bankAccountRepository.save(bankAccount);
+			System.out.println("NEW BALANCE="+ bankAccount.getBalance() +"€");
 			return appTransactionRepository.save(appTransaction);
 		} else
 			System.out.println("saisissez un montant positif");
@@ -95,32 +105,39 @@ public class AppTransactionService {
 	}
 
 	// method to withdraw money from AppAccount to BankAccount
-	public AppTransaction savewithdraw(String iban) {
-		Float transactionAmount = (float) 50.00;
+	public AppTransaction savewithdraw(String userName, Float transactionAmount, String iban, String description) {
+		
 		Float transactionFees = (float) (Math.round(transactionAmount * TransactionConstants.COMMISSION * 100.0)
 				/ 100.0);
+		AppUser user = appUserService.findByEmail(userName);
 		AppTransaction appTransaction = new AppTransaction();
-		BankAccount bankAccount = bankAccountService.getBankAccountByIban(iban);
+		BankAccount bankAccount = bankAccountService.getBankAccountByIban(user.getIban());
 //check if bankAmount balance is >= transactionAMount+tansactionFees
-
 		if (bankAccount.getBalance() >= transactionAmount + transactionFees) {
 			bankAccount.setBalance(bankAccount.getBalance() - transactionAmount - transactionFees);
 			appTransaction.setAmount(transactionAmount);
 			appTransaction.setFees(transactionFees);
 			appTransaction.setOperationDate(TransactionConstants.TRANSACTIONDATE);
 			appTransaction.setOperationType("withdraw");
-			appTransaction.setOperationDescription("withdraw");
-			appTransaction.setReceiverBankAccountNb("FR9999999999999999999999999");
-			appTransaction.setSenderBankAccountNb("FR7612341234123412341234124");
+			appTransaction.setOperationDescription(description);
+			appTransaction.setReceiverBankAccountNb(user.getIban());
+			appTransaction.setSenderBankAccountNb(iban);
 			bankAccountRepository.save(bankAccount);
 			return appTransactionRepository.save(appTransaction);
 		} else
-			System.out.println("pas assez de crédit, il vous reste " + bankAccount.getBalance());
+			System.out.println("pas assez de crédit, il vous reste " + bankAccount.getBalance()+"€");
 		return null;
 	}
 
 //method to find the list of transaction for a user
-	public HashMap<Object, ArrayList<TransactionDto>> findListOfTransactionsByEmail(String email) {
+	public HashMap<Object, ArrayList<AppTransactionDto>> findListOfTransactionsByEmail(String email) {
 		return null;
+		
+	}
+	public ArrayList<AppTransaction> ListOfTransactions(String iban) {
+		ArrayList<AppTransaction> listOfTransactionsByIban = new ArrayList<>();
+		listOfTransactionsByIban=appTransactionRepository.findByReceiverBankAccountNbOrSenderBankAccountNb(iban);
+		listOfTransactionsByIban.getClass();
+	return listOfTransactionsByIban;
 	}
 }
