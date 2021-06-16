@@ -1,5 +1,7 @@
 package com.payMyBuddy.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -20,6 +22,10 @@ public interface AppUserRepository extends JpaRepository<AppUser, Integer> {
 	
 	 @Query("SELECT u FROM AppUser u WHERE u.username=:usernameOrEmail OR u.email=:usernameOrEmail")
 	    AppUser findByUsernameOrEmail(String usernameOrEmail);
+
+
+
+	void save(List<AppUser> listOfContacts);
 	 
 	 
 }

@@ -55,7 +55,7 @@ public class AppUser {
 
 	@Column(length = 80)
 	@NotNull
-	private String password ="a";
+	private String password = "a";
 
 	@Column(length = 27)
 	private String iban;
@@ -139,5 +139,4 @@ public class AppUser {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
 }

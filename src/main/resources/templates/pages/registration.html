@@ -12,16 +12,24 @@
 </head>
 
 <body>
-
+<!-- Navigation menu -->
+	<nav class="navbar navbar-expand ">
+		<div class="container-fluid">
+			<button class="btndisabled btn btn-success center-block disabled">Pay
+				My Buddy</button>
+			<div>
+				<ul class="nav navbar-right">
+					<li class="nav-item"><a class="nav-link active" href="home">Home</a></li>
+								
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+		<!-- End Navigation menu -->
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
-
-				<!-- success message -->
-				<div th:if="${param.success}">
-					<div class="alert alert-info">You've been successfully registered!
-					</div>
-				</div>
 
 				<h2 class="offset-md-10">Registration</h2>
 			</div>
@@ -32,7 +40,8 @@
 				<div class="col-md-6 pt-3 ">
 					<label class="control-label offset-md-7" for="firstName"> First Name </label>
 
-					<input id="firstName" class="form-control offset-md-7" th:field="*{firstName}" required autofocus="autofocus" />
+					<input id="firstName" class="form-control offset-md-7" th:field="*{firstName}" required
+						autofocus="autofocus" />
 				</div>
 				<div class="col-md-6 pt-3 "></div>
 
@@ -45,38 +54,47 @@
 
 
 				<div class="col-md-6 pt-3 ">
-					<label class="control-label offset-md-7" for="emailNewUser"> Email </label>
-					<input id="emailNewUser" class="form-control offset-md-7" th:field="*{email}"required autofocus="autofocus" />
+					<label class="control-label offset-md-7" for="email"> Email </label>
+					<input id="email" class="form-control offset-md-7" th:field="*{email}" required
+						autofocus="autofocus" />
 				</div>
 				<div class="col-md-6 pt-3 "></div>
 
 
 				<div class="col-md-6 pt-3 ">
 					<label class="control-label offset-md-7" for="passwordNewUser"> Password </label>
-					<input id="passwordNewUser" class="form-control offset-md-7" type="password" th:field="*{password}"required
-						autofocus="autofocus" />
+					<input id="passwordNewUser" class="form-control offset-md-7" type="password" th:field="*{password}"
+						required autofocus="autofocus" />
 				</div>
 				<div class="col-md-6 pt-3 "></div>
 
-				<div class="col-md-6 pt-3 ">
-					<label class="control-label offset-md-7" for="holder"> Holder </label> <input id="holder"
-						class="form-control offset-md-7"  required autofocus="autofocus" />
-				</div>
-				<div class="col-md-6 pt-3 "></div>
+				<form th:action="@{/registration}" method='POST' th:object="${bankAccount}">
+					<!--<input type="hidden" id="id" th:field="*{id}" name="id">-->
+					<div class="row">
+						<div class="col-md-6 pt-3 ">
+							<label class="control-label offset-md-7" for="holder"> Holder </label> <input id="holder"
+								class="form-control offset-md-7" th:field="*{holder}" required autofocus="autofocus" />
+						</div>
+						<div class="col-md-6 pt-3 "></div>
 
-				<div class="col-md-6 pt-3 ">
-					<label class="control-label offset-md-7" for="iban"> Iban </label> <input id="iban"
-						class="form-control offset-md-7" th:field="*{iban}" required autofocus="autofocus" />
-				</div>
-				<div class="col-md-6 pt-3 "></div>
-
+						<div class="col-md-6 pt-3 ">
+							<label class="control-label offset-md-7" for="iban"> Iban </label> <input id="iban"
+								class="form-control offset-md-7" th:field="*{iban}" required autofocus="autofocus" />
+						</div>
+						<div class="col-md-6 pt-3 "></div>
+				</form>
 				<div class="col-md-7 pt-3">
 					<button type="submit" class="btn btn-success offset-md-10">Submit</button>
-
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" th:action="@{/home}" >Cancel</button>
 				</div>
 				<div class="col-md-6 pt-3 "></div>
 
 		</form>
+	</div>
+	<!-- success message -->
+	<div th:if="${param.success}">
+		<p style="font-size: 20; color: rgb(0, 255, 128);" align="center">You've been successfully registered!
+	</div>
 	</div>
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

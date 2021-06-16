@@ -1,6 +1,7 @@
 package com.payMyBuddy;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,10 +75,9 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 //	AppUser addContact=appUserService.addConnection("fgarnier@hotmail.com", "pmartin@gmail.com");
 //	System.out.println("user added");
 	
-//	ArrayList<AppTransaction> listOfTransactionsByUsername = new ArrayList<>();
+//	List<AppTransaction> listOfTransactionsByUsername = new ArrayList<>();
 //	listOfTransactionsByUsername=appTransactionService.ListOfTransactions("FR7612341234123412341234123");
 //	System.out.println(listOfTransactionsByUsername);
-//	}
-	
-	}	
+		
+	}
 }

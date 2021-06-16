@@ -17,31 +17,37 @@ import javax.persistence.Table;
 @Table
 public class AppTransaction {
 	@ManyToMany
-			//(mappedBy = "appTransactions")
+	// (mappedBy = "appTransactions")
 	List<BankAccount> bankAccounts = new ArrayList<>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int transactionId;
 
-	@Column(length = 24)
+	@Column(length = 27)
 	private String senderBankAccountNb;
 
-	@Column(length = 24)
+	@Column(length = 20)
+	private int senderId;
+
+	@Column(length = 27)
 	private String receiverBankAccountNb;
+
+	@Column(length = 20)
+	private int receiverId;
 
 	@Column(length = 80)
 	private String operationDescription;
-	
+
 	@Column(length = 50)
 	private String operationType;
-	
+
 	@Column(length = 20)
 	private String operationDate;
 
 	@Column(length = 20)
 	private Float amount;
-	
+
 	@Column(length = 20)
 	private Float fees;
 
@@ -61,12 +67,28 @@ public class AppTransaction {
 		this.senderBankAccountNb = senderBankAccountNb;
 	}
 
+	public int getSenderId() {
+		return senderId;
+	}
+
+	public void setSenderId(int senderId) {
+		this.senderId = senderId;
+	}
+
 	public String getReceiverBankAccountNb() {
 		return receiverBankAccountNb;
 	}
 
 	public void setReceiverBankAccountNb(String receiverBankAccountNb) {
 		this.receiverBankAccountNb = receiverBankAccountNb;
+	}
+
+	public int getReceiverId() {
+		return receiverId;
+	}
+
+	public void setReceiverId(int receiverId) {
+		this.receiverId = receiverId;
 	}
 
 	public String getOperationDescription() {

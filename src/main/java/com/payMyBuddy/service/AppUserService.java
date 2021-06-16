@@ -18,8 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.payMyBuddy.dto.AppUserDto;
 import com.payMyBuddy.model.AppUser;
+import com.payMyBuddy.model.BankAccount;
 import com.payMyBuddy.model.Role;
 import com.payMyBuddy.repository.AppUserRepository;
+import com.payMyBuddy.repository.BankAccountRepository;
 import com.payMyBuddy.web.controller.HomeController;
 
 @Service
@@ -32,6 +34,8 @@ public class AppUserService {
 	@Autowired
 	private BankAccountService bankAccountService;
 	@Autowired
+	private BankAccountRepository bankAccountRepository;
+	@Autowired
 	private HomeController homeController;
 //	@Autowired
 //	private Role role;
@@ -43,7 +47,7 @@ public class AppUserService {
 	}
 
 
-	// trouver un user à la connection
+	// get a user after authentication
 	@Transactional(rollbackFor = Exception.class)
 	public AppUser findByEmail(String username) {
 		AppUser	userConnected;
@@ -73,26 +77,37 @@ public class AppUserService {
 	// post
 	// Check if already in DB
 	@Transactional
-	public AppUser addAppUser(AppUserDto appUserDto) {
+	public AppUser addAppUser(AppUser appUser, BankAccount bankAccount) {
 
-		AppUser getUser = userSet(appUserDto);
+		AppUser getUser = userSet(appUser, bankAccount);
 		AppUser newUser = appUserRepository.save(getUser);
+		BankAccount getBankAccount = bankAccountSet(appUser, bankAccount);
+		bankAccountRepository.save(getBankAccount);
 		return newUser;
 	}
 
-	public AppUser userSet(AppUserDto appUserDto) {
+	public AppUser userSet(AppUser appUser, BankAccount bankAccount) {
 		AppUser user = new AppUser();
-
-		user.setEmail(appUserDto.getEmailNewUser());
-		// user.setPassword(passwordEncoder.encode(appUserDto.getPasswordNewUser()));
-		user.setFirstName(appUserDto.getFirstName());
-		user.setLastName(appUserDto.getLastName());
-		user.setUsername(appUserDto.getUserName());
-		user.setIban(appUserDto.getIban());
-
-		//user.setRole(new Role(Integer.valueOf(2), user));
-
+		Role role = new Role();
+		role.setId(2);
+		role.setRoleName("User");
+		user.setEmail(appUser.getEmail());
+		user.setPassword(passwordEncoder.encode(appUser.getPassword()));
+		user.setFirstName(appUser.getFirstName());
+		user.setLastName(appUser.getLastName());
+		user.setUsername(appUser.getEmail());
+		user.setIban(appUser.getIban());
+		user.setRole(role);
+		
 		return user;
+	}
+	public BankAccount bankAccountSet(AppUser appUser, BankAccount bankAccount) {
+		BankAccount bankAccounttoAssociate = new BankAccount();
+		bankAccounttoAssociate.setIban(appUser.getIban());
+		bankAccounttoAssociate.setBalance(0.00F);
+		bankAccounttoAssociate.setHolder(bankAccount.getHolder());
+		
+		return bankAccounttoAssociate;
 	}
 
 //		AppUser newAppUser = new AppUser();
@@ -123,17 +138,31 @@ public class AppUserService {
 	}
 
 //Ajouter une connection(nouveau contact)
-
-	public AppUser addConnection(String userName, String email) {
+	
+	public List<AppUser> addConnection(String userName, String email) {
 		AppUser user = appUserService.findByEmail(userName);
 		List<AppUser> listOfContacts = user.getUserContacts();
-		if (email.equals(appUserRepository.findByEmail(email).getEmail())) {
-			listOfContacts.add(user);
-			return user;
-		}
-		return null;
-
+		AppUser newContact = appUserService.getAppUserByEmail(email);
+		
+		//newUser.setUserId(1);
+		listOfContacts.add(newContact);
+		appUserRepository.save(listOfContacts);
+		return listOfContacts;
 	}
+
+//	public List<AppUser> addConnection(String userName, AppUser appUser) {
+//		AppUser user = appUserService.findByEmail(userName);
+//		List<AppUser> listOfContacts = user.getUserContacts();
+//		String newContact = appUser.getEmail();
+//		AppUser newUser = appUserService.findByEmail(newContact);
+//		//newUser.setUserId(1);
+//		listOfContacts.add(newUser);
+//		appUserRepository.save(listOfContacts);
+//		return listOfContacts;
+//	}
+
+
+	
 
 	// POST
 	public ResponseEntity<AppUser> postPerson(AppUser personToPost) {

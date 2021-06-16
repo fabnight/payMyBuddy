@@ -15,6 +15,8 @@ import com.payMyBuddy.repository.BankAccountRepository;
 public class BankAccountService {
 	@Autowired
 	private BankAccountRepository bankAccountRepository;
+	@Autowired
+	AppUserService appUserservice;
 
 	public Iterable<BankAccount> getBankAccounts() {
 		return bankAccountRepository.findAll();
@@ -29,10 +31,19 @@ public class BankAccountService {
 		
 		
 	}
+	
+	//get balance for a bankAccount
+	public Float balance(String iban) {
+		BankAccount bankAccount=getBankAccountByIban(iban);	
+		Float balance= bankAccount.getBalance();
+		return balance;
+		
+		
+	}
 
 	// create the App Account from user email
-	public String save(String email) {
-
+	public String save(String email, String iban) {
+		
 		BankAccount account = new BankAccount();
 		account.setBalance((float) 0);
 		account.setHolder(email);

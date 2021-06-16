@@ -14,8 +14,7 @@
 				My Buddy</button>
 			<div>
 				<ul class="nav navbar-right">
-					<li class="nav-item"><a class="nav-link active" href="home">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="transfer">Transfer</a></li>
+					<li class="nav-item"><a class="nav-link active" href="menu">Home</a></li>
 					<li class="nav-item"><a class="nav-link" href="registration">Profile</a></li>
 					<li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
 					<li class="nav-item" sec:authorize="isAuthenticated()">
@@ -26,14 +25,14 @@
 				</ul>
 			</div>
 		</div>
-	</nav>
-
+		</nav>
+		
 <div class="container">
     <div class="row justify-content-start bg-light">
-        <div class="col-md-auto" style="">
+        <div class="col-md-auto" >
             <h2 class="pt-2 pb-2">Home</h2>
         </div>
-        <div class="col-md-auto" style="">
+        <div class="col-md-auto">
             <h2 class="pt-2 pb-2 text-secondary">/&nbsp;&nbsp;&nbsp;Transfer</h2>
         </div>
     </div>
@@ -41,7 +40,7 @@
 <!-- success message -->
 <div class="container">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3" style="">
+        <div class="col-md-6 col-md-offset-3" >
             <div th:if="${param.success}">
                 <div class="alert alert-info">You've successfully transfered your money!</div>
             </div>
@@ -54,46 +53,43 @@
             <div class="col-md-6 bg-light">
                 <h5 class="">Send money<br></h5>
             </div>
+            
             <div class="col-md-6 text-right"><a class="btn btn-primary" href="contact">Add Connection</a></div>
+            <span class="badge badge-pill badge-info">
+			<h2 th:text="'  Hello '+${username}+'!'+' '+'Your balance amount'+' '+'='+' '+${balance}+'€'"> Hello user!
+				<h2>
+		</span>
         </div>
     </div>
 </div>
 <form class="">
-    <div class="my-3 py-1" style="">
+    <div class="my-3 py-1" >
         <div class="container">
            
 
             <div class="row pt-4">
-                <label class="control-label"> Emitter </label>
+                <label class="control-label"> Select a connection </label>
             </div>
 
             <div class="row">
                 <select class="form-control " >
                     
             </div>
-
+           
             <div class="row pt-2">
-                <label class="control-label pt-3">Receiver</label>
-                <select class="form-control " >
-                   
-            </div>
-
-            <div class="row pt-2">
-                <label class="control-label pt-3">Amount</label>
-                <div class="form-group pl-3 pt-3">
+                <label class="control-label pt-2">Amount</label>
+                <div class="form-group pl-2 pt-8">
                     <div class="input-group"><input type="number" class="form-control  " id="inlineFormInputGroup"
                                                     placeholder="0€" </div>
-                </div>
-                <div class="col-md-4 pt-3 pl-5">
+               
+                <div class="col-md-3 pt-3 pl-2">
                     <button type="submit" class="btn btn-success btn-block my-1 ">Pay</button>
                 </div>
-            </div>
-
-
+         
             <div class="row pt-2">
-                <label class="control-label " for="designation"> Designation </label>
-                <input id="designation" class="form-control"  required autofocus="autofocus"/>
-            </div>
+                <label class="col-md-4 control-label pt-1 " for="designation"> Description </label>
+                <input id="designation" class="form-control "  required autofocus="autofocus"/>
+            </div>   </div>
         </div>
     </div>
 </form>
@@ -112,7 +108,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 bg-success">
-                <h6 class="text-center">Connections<br></h6>
+                <h6 class="text-center"th:field="*{receiverBankAccountNb}">Connections<br></h6>
             </div>
             <div class="col-md-4 bg-success">
                 <h6 class="text-center bg-success">Description</h6>
@@ -142,7 +138,7 @@
                 <ul class="pagination justify-content-center font-weight-medium">
                     <li class="page-item" th:classappend="${currentPage eq 0} ? 'disabled'">
                         <a class="page-link svg-icon"
-                           th:href="@{foreigntransaction?page={id}(id=${currentPage lt 2 ? 1 : currentPage})}"
+                           th:href="@{transactions?page={id}(id=${currentPage lt 2 ? 1 : currentPage})}"
                            aria-label="Previous"
                            title="Previous Page" rel="tooltip">
                             <span aria-hidden="true" width="20" height="20"><i class="fa fa-chevron-left"></i></span>
@@ -151,7 +147,7 @@
 
                     <li class="page-item" th:classappend="${i eq currentPage+1} ? 'active'"
                         th:each="i : ${#numbers.sequence( 1, totalPages > 5 + currentPage ? currentPage + 5 : totalPages, 1)}">
-                        <a class="page-link" th:href="@{foreigntransaction?page={id}(id=${i})}" th:text="${i}"
+                        <a class="page-link" th:href="@{transactions?page={id}(id=${i})}" th:text="${i}"
                            th:title="${'Page '+ i}"
                            rel="tooltip">
                         </a>
@@ -164,7 +160,7 @@
                     </li>
 
                     <li class="page-item" th:classappend="${currentPage+1 eq totalPages} ? 'disabled'">
-                        <a class="page-link svg-icon" th:href="@{foreigntransaction?page={id}(id=${currentPage + 2})}"
+                        <a class="page-link svg-icon" th:href="@{transactions?page={id}(id=${currentPage + 2})}"
                            aria-label="Next"
                            title="Next Page" rel="tooltip">
                             <span aria-hidden="true" width="20" height="20"><i class="fa fa-chevron-right"></i></span>
