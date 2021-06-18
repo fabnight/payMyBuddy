@@ -9,6 +9,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.payMyBuddy.dto.BankAccountDto;
@@ -48,12 +50,15 @@ public class AppTransactionService {
 	}
 
 	// method to transfer money to 3rd party
-	public AppTransaction savePayment(String senderIban, String receiverIban) {
-
+	public AppTransaction savePayment(String username, String receiverBankAccountNb, Float transactionAmount, String description) {
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		String userEmail = authentication.getName();
+		AppUser appUserByUserName = appUserRepository.findByEmail(username);//userEmail);
+		BankAccount senderBankAccount = bankAccountService.getBankAccountByIban(appUserByUserName.getIban());
+		AppUser appUserConnection = appUserService.findByEmail(receiverBankAccountNb);
+		BankAccount receiverBankAccount = bankAccountService.getBankAccountByIban(appUserConnection.getIban());
 		AppTransaction appTransaction = new AppTransaction();
-		BankAccount senderBankAccount = bankAccountService.getBankAccountByIban(senderIban);
-		BankAccount receiverBankAccount = bankAccountService.getBankAccountByIban(receiverIban);
-		Float transactionAmount = 90f;
+	
 		Float transactionFees = (float) (Math.round(transactionAmount * TransactionConstants.COMMISSION * 100.0)
 				/ 100.0);
 
@@ -64,9 +69,11 @@ public class AppTransactionService {
 			appTransaction.setFees(transactionFees);
 			appTransaction.setOperationDate(TransactionConstants.TRANSACTIONDATE);
 			appTransaction.setOperationType("payment");
-			appTransaction.setOperationDescription("payment");
-			appTransaction.setReceiverBankAccountNb("FR8112341234123412341234124");
-			appTransaction.setSenderBankAccountNb("FR7612341234123412341234123");
+			appTransaction.setOperationDescription(description);
+			appTransaction.setReceiverBankAccountNb(appUserConnection.getIban());
+			appTransaction.setReceiverId(appUserConnection.getUserId());
+			appTransaction.setSenderId(appUserByUserName.getUserId());
+			appTransaction.setSenderBankAccountNb(appUserByUserName.getIban());
 			bankAccountRepository.save(senderBankAccount);
 			bankAccountRepository.save(receiverBankAccount);
 			return appTransactionRepository.save(appTransaction);
@@ -81,7 +88,7 @@ public class AppTransactionService {
 		AppTransaction appTransaction = new AppTransaction();
 		BankAccount bankAccount = bankAccountService.getBankAccountByIban(user.getIban());
 
-		if (transactionAmount != null&&transactionAmount>0) {
+		if (transactionAmount != null && transactionAmount > 0) {
 			bankAccount.setBalance(bankAccount.getBalance() + transactionAmount);
 			appTransaction.setAmount(transactionAmount);
 			appTransaction.setFees((float) 0.00);
@@ -110,7 +117,8 @@ public class AppTransactionService {
 				/ 100.0);
 
 //check if bankAmount balance is >= transactionAMount+tansactionFees
-		if (bankAccount.getBalance() >= transactionAmount + transactionFees&&transactionAmount != null&&transactionAmount>0) {
+		if (bankAccount.getBalance() >= transactionAmount + transactionFees && transactionAmount != null
+				&& transactionAmount > 0) {
 			bankAccount.setBalance(bankAccount.getBalance() - transactionAmount - transactionFees);
 			appTransaction.setAmount(transactionAmount);
 			appTransaction.setFees(transactionFees);

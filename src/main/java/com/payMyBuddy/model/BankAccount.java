@@ -16,17 +16,20 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table
+@Table( uniqueConstraints={
+        @UniqueConstraint(name="iban", columnNames={"iban"})})
 public class BankAccount {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	
 	@Column(length = 27)
-	private String iban;
+	private String iban; //@UniqueConstraint;
 
 	@Column(length = 20)
 	private Float balance;

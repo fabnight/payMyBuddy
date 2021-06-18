@@ -24,6 +24,7 @@ import com.payMyBuddy.repository.AppUserRepository;
 import com.payMyBuddy.repository.BankAccountRepository;
 import com.payMyBuddy.web.controller.HomeController;
 
+
 @Service
 public class AppUserService {
 
@@ -72,18 +73,19 @@ public class AppUserService {
 		return appUserRepository.findByEmail(email);
 
 	}
-	// Get
-
-	// post
+	
 	// Check if already in DB
 	@Transactional
 	public AppUser addAppUser(AppUser appUser, BankAccount bankAccount) {
-
+		boolean existingEmail =appUserRepository.existsAppUserByEmail(appUser.getEmail());
+		if(existingEmail=true) {System.out.println("Can not register you, this email is already existing");}
+		else {
 		AppUser getUser = userSet(appUser, bankAccount);
 		AppUser newUser = appUserRepository.save(getUser);
 		BankAccount getBankAccount = bankAccountSet(appUser, bankAccount);
 		bankAccountRepository.save(getBankAccount);
-		return newUser;
+		return newUser;}
+		return null;
 	}
 
 	public AppUser userSet(AppUser appUser, BankAccount bankAccount) {
@@ -110,15 +112,7 @@ public class AppUserService {
 		return bankAccounttoAssociate;
 	}
 
-//		AppUser newAppUser = new AppUser();
-//		newAppUser.setLastName("DURAND");
-//		newAppUser.setFirstName("Jacques");
-//		newAppUser.setEmail("jdurand@gmail.com");
-//		newAppUser.setPassword("BERTRAND99");
-//		newAppUser.setIban("FR9999999999999999999999999");
-//		bankAccountService.save(email);
-//		return appUserRepository.save(newAppUser);
-//	}
+
 	// put
 	// Check if already in DB
 
@@ -142,12 +136,18 @@ public class AppUserService {
 	public List<AppUser> addConnection(String userName, String email) {
 		AppUser user = appUserService.findByEmail(userName);
 		List<AppUser> listOfContacts = user.getUserContacts();
+		//check if this connection is not already in the user list
+		boolean existingEmail =appUserRepository.existsListOfcontactsByEmail(email);
+		if(existingEmail=true) {System.out.println("This connection"+" "+email+" is already in your list of contacts");}
+		else {
+		
 		AppUser newContact = appUserService.getAppUserByEmail(email);
 		
 		//newUser.setUserId(1);
 		listOfContacts.add(newContact);
 		appUserRepository.save(listOfContacts);
-		return listOfContacts;
+		return listOfContacts;}
+		return null;
 	}
 
 //	public List<AppUser> addConnection(String userName, AppUser appUser) {

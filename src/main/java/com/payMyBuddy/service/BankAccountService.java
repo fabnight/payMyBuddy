@@ -28,9 +28,9 @@ public class BankAccountService {
 	
 	public BankAccount getBankAccountByIban(String iban) {
 		return bankAccountRepository.findByIban(iban);
-		
-		
+	
 	}
+	
 	
 	//get balance for a bankAccount
 	public Float balance(String iban) {

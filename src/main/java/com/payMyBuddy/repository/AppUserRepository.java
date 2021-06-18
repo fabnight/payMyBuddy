@@ -19,6 +19,7 @@ public interface AppUserRepository extends JpaRepository<AppUser, Integer> {
 	AppUser findByEmailAndPassword(String email, String password);
 
 	boolean existsAppUserByEmail(String email);
+	boolean existsListOfcontactsByEmail(String email);
 	
 	 @Query("SELECT u FROM AppUser u WHERE u.username=:usernameOrEmail OR u.email=:usernameOrEmail")
 	    AppUser findByUsernameOrEmail(String usernameOrEmail);
