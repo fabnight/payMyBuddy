@@ -17,31 +17,37 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import com.sun.istack.NotNull;
 
 @Entity
-@Table( uniqueConstraints={
-        @UniqueConstraint(name="iban", columnNames={"iban"})})
+@Table(uniqueConstraints = { @UniqueConstraint(name = "iban", columnNames = { "iban" }) })
 public class BankAccount {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	
+
 	@Column(length = 27)
-	private String iban; //@UniqueConstraint;
+	@Size(min = 27, max = 27)
+	@NotNull
+	@NotEmpty(message = "User's iban cannot be empty.")
+	private String iban; // @UniqueConstraint;
 
 	@Column(length = 20)
 	private Float balance;
 
 	@Column(length = 80)
+	@NotNull
 	private String holder;
 
 	@ManyToMany(mappedBy = "bankAccounts")
 	List<AppUser> appusers = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "bankAccounts")
-	
+
 	private List<AppTransaction> appTransactions = new ArrayList<>();
 
 	public int getId() {

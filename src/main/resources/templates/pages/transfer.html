@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    <title>Transfer</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<title>Transfer</title>
 </head>
+
 <body>
-<nav class="navbar navbar-expand ">
+	<nav class="navbar navbar-expand ">
 		<div class="container-fluid">
 			<button class="btndisabled btn btn-success center-block disabled">Pay
 				My Buddy</button>
 			<div>
+
+
 				<ul class="nav navbar-right">
 					<li class="nav-item"><a class="nav-link active" href="menu">Home</a></li>
 					<li class="nav-item"><a class="nav-link" href="registration">Profile</a></li>
@@ -20,133 +24,164 @@
 					<li class="nav-item" sec:authorize="isAuthenticated()">
 						<form th:action="@{/logout}" method="post">
 							<input class="nav-link btn btn-primary" type="submit" value="Log Off" />
+							<div class="dropdown-menu">
+
+							</div>
+							<h6 class="dropdown-header">Dropdown header<h6>
+									<a class="dropdown-item" href="#"
+										th:object="${ReceiverBankAccountNb}">pmartin@gmail.com </a>
+									<a class="dropdown-item" href="#">user@gmail.com</a>
 						</form>
 					</li>
 				</ul>
 			</div>
 		</div>
-		</nav>
-		
-<div class="container">
-    <div class="row justify-content-start bg-light">
-        <div class="col-md-auto" >
-            <h2 class="pt-2 pb-2">Home</h2>
-        </div>
-        <div class="col-md-auto">
-            <h2 class="pt-2 pb-2 text-secondary">/&nbsp;&nbsp;&nbsp;Transfer</h2>
-        </div>
-    </div>
-</div>
-<!-- success message -->
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3" >
-            <div th:if="${param.success}">
-                <div class="alert alert-info">You've successfully transfered your money!</div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="py-1">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 bg-light">
-                <h5 class="">Send money<br></h5>
-            </div>
-            
-            <div class="col-md-6 text-right"><a class="btn btn-primary" href="contact">Add Connection</a></div>
-            <span class="badge badge-pill badge-info">
-			<h2 th:text="'  Hello '+${username}+'!'+' '+'Your balance amount'+' '+'='+' '+${balance}+'€'"> Hello user!
-				<h2>
-		</span>
-        </div>
-    </div>
-</div>
-<form class="">
-    <div class="my-3 py-1" >
-        <div class="container">
-           
-
-            <div class="row pt-4">
-                <label class="control-label"> Select a connection </label>
-            </div>
-
-            <div class="row">
-                <select class="form-control " >
-                    
-            </div>
-           
-            <div class="row pt-2">
-                <label class="control-label pt-2">Amount</label>
-                <div class="form-group pl-2 pt-8">
-                    <div class="input-group"><input type="number" class="form-control  " id="inlineFormInputGroup"
-                                                    placeholder="0€" </div>
-               
-                <div class="col-md-3 pt-3 pl-2">
-                    <button type="submit" class="btn btn-success btn-block my-1 ">Pay</button>
-                </div>
-         
-            <div class="row pt-2">
-                <label class="col-md-4 control-label pt-1 " for="designation"> Description </label>
-                <input id="designation" class="form-control "  required autofocus="autofocus"/>
-            </div>   </div>
-        </div>
-    </div>
-</form>
-
-<div class="py-3">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 text-left">
-                <h5 class="">My Transactions<br></h5>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="py-2">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 bg-success">
-                <h6 class="text-center"th:field="*{receiverBankAccountNb}">Connections<br></h6>
-            </div>
-            <div class="col-md-4 bg-success">
-                <h6 class="text-center bg-success">Description</h6>
-            </div>
-            <div class="col-md-4 bg-success">
-                <h6 class="text-center">Amount<br></h6>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="">
-    <div class="container">
-        <div class="row" data-th-each="p : ${ foreigntransactions }">
-            <div class="col-md-4 text-center" ></div>
-            <div class="col-md-4 text-center" ></div>
-            <div class="col-md-4 text-center" ></div>
-        </div>
-    </div>
-</div>
+	</nav>
 
 
-<div class="py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4" th:if="${totalPages gt 0}">
-                <ul class="pagination justify-content-center font-weight-medium">
-                    <li class="page-item" th:classappend="${currentPage eq 0} ? 'disabled'">
-                        <a class="page-link svg-icon"
-                           th:href="@{transactions?page={id}(id=${currentPage lt 2 ? 1 : currentPage})}"
-                           aria-label="Previous"
-                           title="Previous Page" rel="tooltip">
-                            <span aria-hidden="true" width="20" height="20"><i class="fa fa-chevron-left"></i></span>
-                        </a>
-                    </li>
+	<!-- success message -->
+	<div class="container">
+	
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div th:if="${param.success}">
+					<div class="alert alert-info">You've successfully transfered your money!</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="alert alert-warning" th:if="${error!=null}" th:text="${error}"role="alert">Une erreur est survenue >
+    </div>
+	<div class="py-1">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 bg-light">
+					<h4 class="">To Transfer money to a buddy<br></h4>
+				</div>
 
-                    <li class="page-item" th:classappend="${i eq currentPage+1} ? 'active'"
-                        th:each="i : ${#numbers.sequence( 1, totalPages > 5 + currentPage ? currentPage + 5 : totalPages, 1)}">
+				<div class="col-md-6 text-right"><a class="btn btn-primary" href="contact">Add Connection</a></div>
+			</div>
+			<span class="badge badge-pill badge-info">
+				<h3 th:text="'  Dear '+${username}+' :'+' '+'Your balance amount'+' '+'='+' '+${balance}+'€'"> Hello
+					user!
+				</h3>
+			</span>
+		</div>
+	</div>
+	</div>
+	<div class="card-body text-left col-md-6 text-Left">
+		<div class="row">
+			<div class="col-3">
+				<div class="list-group" id="list-tab" role="tablist">
+					<form class="form-inline" th:action="@{/transfer}" method="POST" th:object="${appTransaction}">
+						<div class="my-3 py-1">
+							<div class="container">
+
+								<div class="row pt-8">
+									<label class="control-label"> Select a connection </label>
+								</div>
+
+								<div class="row">
+									<select class="form-control ">
+
+								</div>
+								<div class="row pt-2">
+								<label class="col-md-2 control-label pt-1 " for="designation"> CONNECTION </label>
+									<input id="designation" class="form-control " th:field="*{receiverBankAccountNb}"
+										required autofocus="autofocus" />
+									<label class="col-md-6 control-label pt-1 " for="designation"> Description </label>
+									<input id="designation" class="form-control " th:field="*{operationDescription}"
+										placeholder="for example: 'gift Alex'" required autofocus="autofocus" />
+									
+								</div>
+								<div class="row pt-2">
+									<label class="col-md-4 control-label pt-1 ">Amount</label>
+									<div class="form-group pl-2 pt-8">
+										<div class="input-group"><input type="number" min="0.01" step=".01" value="0.01"
+												placeholder="(min amount=0,01€)" class="form-control  "
+												th:field="*{amount}" required autofocus="autofocus"
+												id="inlineFormInputGroup" </div>
+
+											<div class="col-md-3 pt-3 pl-2">
+												<button type="submit"
+													class="btn btn-success btn-block my-1 ">Pay</button>
+											</div>
+
+
+										</div>
+									</div>
+								</div>
+					</form>
+					</div>
+					</div>
+					</div>
+					</div>
+					</div>
+					
+					<table border="1">
+					<tr>
+					<th>email</th>
+					<th>name</th>
+					</tr>
+					<tr th:each = "contact : ${contacts}">
+					<td th:utext="{contact.email}">...</td>
+					<td th:utext="{contact.lastName}">...</td>
+					</tr>
+					</table>
+					
+					<div class="py-3">
+						<div class="container">
+							<div class="row">
+								<div class="col-md-12 text-left">
+									<h5 class="">My Transactions<br></h5>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="py-2">
+						<div class="container">
+							<div class="row">
+								<div class="col-md-4 bg-success">
+									<h6 class="text-center">Connections<br></h6>
+
+								</div>
+								<div class="col-md-4 bg-success">
+									<h6 class="text-center bg-success">Description</h6>
+								</div>
+								<div class="col-md-4 bg-success">
+									<h6 class="text-center">Amount<br></h6>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="">
+						<div class="container">
+							<div class="row" data-th-each="p : ${ foreigntransactions }">
+								<div class="col-md-4 text-center"></div>
+								<div class="col-md-4 text-center"></div>
+								<div class="col-md-4 text-center"></div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="py-5">
+						<div class="container">
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-4" th:if="${totalPages gt 0}">
+									<ul class="pagination justify-content-center font-weight-medium">
+										<li class="page-item" th:classappend="${currentPage eq 0} ? 'disabled'">
+											<a class="page-link svg-icon"
+												th:href="@{transactions?page={id}(id=${currentPage lt 2 ? 1 : currentPage})}"
+												aria-label="Previous" title="Previous Page" rel="tooltip">
+												<span aria-hidden="true" width="20" height="20"><i
+														class="fa fa-chevron-left"></i></span>
+											</a>
+										</li>
+
+										<li class="page-item" th:classappend="${i eq currentPage+1} ? 'active'" th:each="i : ${#numbers.sequence( 1, totalPages > 5 + currentPage ? currentPage + 5 : totalPages, 1)}">
                         <a class="page-link" th:href="@{transactions?page={id}(id=${i})}" th:text="${i}"
                            th:title="${'Page '+ i}"
                            rel="tooltip">
@@ -173,5 +208,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

@@ -10,12 +10,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import com.sun.istack.NotNull;
 
@@ -30,7 +31,8 @@ public class AppUser {
 	@ManyToMany
 	private List<BankAccount> bankAccounts = new ArrayList<>();
 
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL)
+	//@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
 	private List<AppUser> userContacts = new ArrayList<>();
 
 	@OneToOne(fetch = FetchType.EAGER)
@@ -49,15 +51,20 @@ public class AppUser {
 
 	@Column(name = "username", length = 65)
 	private String username;
-
-	@Column(length = 115)
-	private String email;
+	
+	@Column(length = 115, unique=true)
+	@NotEmpty(message = "User's Email cannot be empty.")
+		private String email;
 
 	@Column(length = 80)
 	@NotNull
+	@NotEmpty(message = "User's password cannot be empty.")
 	private String password = "a";
 
 	@Column(length = 27)
+	 @Size(min = 27, max = 27)
+	@NotNull
+	@NotEmpty(message = "User's iban cannot be empty.")
 	private String iban;
 
 	public int getUserId() {

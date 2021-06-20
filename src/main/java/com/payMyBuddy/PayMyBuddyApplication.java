@@ -10,9 +10,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.CommandLineRunner;
 
+import com.payMyBuddy.dto.AppTransactionDto;
 import com.payMyBuddy.model.AppTransaction;
 import com.payMyBuddy.model.AppUser;
 import com.payMyBuddy.model.BankAccount;
+import com.payMyBuddy.repository.AppTransactionRepository;
 import com.payMyBuddy.repository.AppUserRepository;
 import com.payMyBuddy.repository.BankAccountRepository;
 import com.payMyBuddy.service.AppTransactionService;
@@ -28,6 +30,10 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 
 	@Autowired
 	private AppTransactionService appTransactionService;
+	@Autowired
+	private AppTransactionDto appTransactionDto;
+	@Autowired
+	private AppTransactionRepository appTransactionRepository;
 
 	@Autowired
 	private AppUserRepository appUserRepository;
@@ -74,10 +80,11 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 	
 //	AppUser addContact=appUserService.addConnection("fgarnier@hotmail.com", "pmartin@gmail.com");
 //	System.out.println("user added");
-	
-//	List<AppTransaction> listOfTransactionsByUsername = new ArrayList<>();
-//	listOfTransactionsByUsername=appTransactionService.ListOfTransactions("FR7612341234123412341234123");
-//	System.out.println(listOfTransactionsByUsername);
 		
+//		AppUser appUser = appUserRepository.findByEmail("fgarnier@hotmail.com");
+//		List<AppUser> contact = appUser.getUserContacts();
+//		System.out.println(contact.get(1));
+//	
+	
 	}
 }

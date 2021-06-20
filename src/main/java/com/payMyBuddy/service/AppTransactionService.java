@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +28,7 @@ import com.payMyBuddy.constants.TransactionConstants;
 @Transactional(rollbackOn = Exception.class)
 @Service
 public class AppTransactionService {
-
+	private static final Logger logger = LogManager.getLogger("AppTransactionService");
 	@Autowired
 	private AppTransactionRepository appTransactionRepository;
 	@Autowired
@@ -49,20 +51,21 @@ public class AppTransactionService {
 		return appTransactionRepository.findById(id);
 	}
 
-	// method to transfer money to 3rd party
-	public AppTransaction savePayment(String username, String receiverBankAccountNb, Float transactionAmount, String description) {
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		String userEmail = authentication.getName();
-		AppUser appUserByUserName = appUserRepository.findByEmail(username);//userEmail);
+	// Method to transfer money to 3rd party
+	public AppTransaction savePayment(String username, String receiverBankAccountNb, Float transactionAmount,
+			String description) throws Exception {
+		AppTransaction appTransaction = new AppTransaction();
+
+		AppUser appUserByUserName = appUserRepository.findByEmail(username);
 		BankAccount senderBankAccount = bankAccountService.getBankAccountByIban(appUserByUserName.getIban());
 		AppUser appUserConnection = appUserService.findByEmail(receiverBankAccountNb);
 		BankAccount receiverBankAccount = bankAccountService.getBankAccountByIban(appUserConnection.getIban());
-		AppTransaction appTransaction = new AppTransaction();
-	
+
 		Float transactionFees = (float) (Math.round(transactionAmount * TransactionConstants.COMMISSION * 100.0)
 				/ 100.0);
 
-		if (senderBankAccount.getBalance() >= transactionAmount + transactionFees) {
+		if (transactionAmount != null && transactionAmount > 0
+				&& senderBankAccount.getBalance() >= transactionAmount + transactionFees) {
 			senderBankAccount.setBalance(senderBankAccount.getBalance() - transactionAmount - transactionFees);
 			receiverBankAccount.setBalance(receiverBankAccount.getBalance() + transactionAmount);
 			appTransaction.setAmount(transactionAmount);
@@ -76,41 +79,21 @@ public class AppTransactionService {
 			appTransaction.setSenderBankAccountNb(appUserByUserName.getIban());
 			bankAccountRepository.save(senderBankAccount);
 			bankAccountRepository.save(receiverBankAccount);
-			return appTransactionRepository.save(appTransaction);
-		} else
-			System.out.println("pas assez de crédit, il vous reste " + senderBankAccount.getBalance() + "€");
-		return null;
-	}
+			appTransactionRepository.save(appTransaction);
+		} else {
+			float due = transactionAmount + transactionFees;
+			float missing = due - senderBankAccount.getBalance();
+			throw new Exception("Not enough credit available. Due = " + due + "€, " + "missing = " + missing + "€");
+		}
 
-	// method to provide money from BankAccount to AppAccount
-	public AppTransaction fundAppAccount(String username, Float transactionAmount) {
-		AppUser user = appUserService.findByEmail(username);
-		AppTransaction appTransaction = new AppTransaction();
-		BankAccount bankAccount = bankAccountService.getBankAccountByIban(user.getIban());
-
-		if (transactionAmount != null && transactionAmount > 0) {
-			bankAccount.setBalance(bankAccount.getBalance() + transactionAmount);
-			appTransaction.setAmount(transactionAmount);
-			appTransaction.setFees((float) 0.00);
-			appTransaction.setOperationDate(TransactionConstants.TRANSACTIONDATE);
-			appTransaction.setOperationType("fund");
-			appTransaction.setOperationDescription("fund");
-			appTransaction.setReceiverBankAccountNb(user.getIban());
-			appTransaction.setReceiverId(user.getUserId());
-			appTransaction.setSenderId(user.getUserId());
-			appTransaction.setSenderBankAccountNb(user.getIban());
-			bankAccountRepository.save(bankAccount);
-			System.out.println("NEW BALANCE=" + bankAccount.getBalance() + "€");
-			return appTransactionRepository.save(appTransaction);
-		} else
-			System.out.println("saisissez un montant positif");
-		return null;
+		return appTransaction;
 	}
 
 	// method to withdraw money from AppAccount to BankAccount
-	public AppTransaction savewithdraw(String username, Float transactionAmount) {
+	public AppTransaction savewithdraw(String username, Float transactionAmount) throws Exception {
 		AppUser user = appUserService.findByEmail(username);
 		AppTransaction appTransaction = new AppTransaction();
+
 		BankAccount bankAccount = bankAccountService.getBankAccountByIban(user.getIban());
 
 		Float transactionFees = (float) (Math.round(transactionAmount * TransactionConstants.COMMISSION * 100.0)
@@ -130,11 +113,39 @@ public class AppTransactionService {
 			appTransaction.setSenderId(user.getUserId());
 			appTransaction.setSenderBankAccountNb(user.getIban());
 			bankAccountRepository.save(bankAccount);
-			System.out.println("NEW BALANCE=" + bankAccount.getBalance() + "€");
-			return appTransactionRepository.save(appTransaction);
-		} else
-			System.out.println("pas assez de crédit, il vous reste " + bankAccount.getBalance() + "€");
-		return null;
+			appTransactionRepository.save(appTransaction);
+		} else {
+			float due = transactionAmount + transactionFees;
+			float missing = due - bankAccount.getBalance();
+			throw new Exception("Not enough credit available. Due = " + due + "€, " + "missing = " + missing + "€");
+		}
+		return appTransaction;
+	}
+
+	// method to provide money from BankAccount to AppAccount
+	public AppTransaction fundAppAccount(String username, Float transactionAmount) throws Exception {
+		AppUser user = appUserService.findByEmail(username);
+		AppTransaction appTransaction = new AppTransaction();
+
+		BankAccount bankAccount = bankAccountService.getBankAccountByIban(user.getIban());
+
+		if (transactionAmount != null && transactionAmount > 0) {
+			bankAccount.setBalance(bankAccount.getBalance() + transactionAmount);
+			appTransaction.setAmount(transactionAmount);
+			appTransaction.setFees((float) 0.00);
+			appTransaction.setOperationDate(TransactionConstants.TRANSACTIONDATE);
+			appTransaction.setOperationType("fund");
+			appTransaction.setOperationDescription("fund");
+			appTransaction.setReceiverBankAccountNb(user.getIban());
+			appTransaction.setReceiverId(user.getUserId());
+			appTransaction.setSenderId(user.getUserId());
+			appTransaction.setSenderBankAccountNb(user.getIban());
+			bankAccountRepository.save(bankAccount);
+			
+		} else {
+			throw new Exception("Transaction failed");
+		}
+		return appTransactionRepository.save(appTransaction);
 	}
 
 //method to find the list of transactions for a user

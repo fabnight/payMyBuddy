@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.sun.istack.NotNull;
+
 @Entity
 @Table
 public class AppTransaction {
@@ -46,6 +48,7 @@ public class AppTransaction {
 	private String operationDate;
 
 	@Column(length = 20)
+	@NotNull
 	private Float amount;
 
 	@Column(length = 20)

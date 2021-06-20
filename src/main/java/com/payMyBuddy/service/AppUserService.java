@@ -3,9 +3,13 @@ package com.payMyBuddy.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,10 +28,9 @@ import com.payMyBuddy.repository.AppUserRepository;
 import com.payMyBuddy.repository.BankAccountRepository;
 import com.payMyBuddy.web.controller.HomeController;
 
-
 @Service
 public class AppUserService {
-
+	private static final Logger logger = LogManager.getLogger("AppUserService");
 	@Autowired
 	private AppUserRepository appUserRepository;
 	@Autowired
@@ -47,11 +50,10 @@ public class AppUserService {
 		return true;
 	}
 
-
 	// get a user after authentication
 	@Transactional(rollbackFor = Exception.class)
 	public AppUser findByEmail(String username) {
-		AppUser	userConnected;
+		AppUser userConnected;
 		try {
 			userConnected = appUserRepository.findByEmail(username);
 		} catch (Exception e) {
@@ -73,19 +75,24 @@ public class AppUserService {
 		return appUserRepository.findByEmail(email);
 
 	}
-	
-	// Check if already in DB
+
+	// Method to register a new user
+
 	@Transactional
-	public AppUser addAppUser(AppUser appUser, BankAccount bankAccount) {
-		boolean existingEmail =appUserRepository.existsAppUserByEmail(appUser.getEmail());
-		if(existingEmail=true) {System.out.println("Can not register you, this email is already existing");}
-		else {
-		AppUser getUser = userSet(appUser, bankAccount);
-		AppUser newUser = appUserRepository.save(getUser);
-		BankAccount getBankAccount = bankAccountSet(appUser, bankAccount);
-		bankAccountRepository.save(getBankAccount);
-		return newUser;}
-		return null;
+	public AppUser addAppUser(AppUser appUser, BankAccount bankAccount) throws Exception {
+
+		boolean alreadyExistingUser = appUserRepository.existsAppUserByEmail(appUser.getEmail());
+// Check if already in DB
+		if (alreadyExistingUser) {
+			throw new Exception("Can not register you, this email is already existing for a user");
+
+		} else {
+			AppUser getUser = userSet(appUser, bankAccount);
+			AppUser newUser = appUserRepository.save(getUser);
+			BankAccount getBankAccount = bankAccountSet(appUser, bankAccount);
+			bankAccountRepository.save(getBankAccount);
+			return newUser;
+		}
 	}
 
 	public AppUser userSet(AppUser appUser, BankAccount bankAccount) {
@@ -100,74 +107,45 @@ public class AppUserService {
 		user.setUsername(appUser.getEmail());
 		user.setIban(appUser.getIban());
 		user.setRole(role);
-		
+
 		return user;
 	}
+
+	// Method to create a new bank account associated to a user
 	public BankAccount bankAccountSet(AppUser appUser, BankAccount bankAccount) {
 		BankAccount bankAccounttoAssociate = new BankAccount();
 		bankAccounttoAssociate.setIban(appUser.getIban());
 		bankAccounttoAssociate.setBalance(0.00F);
 		bankAccounttoAssociate.setHolder(bankAccount.getHolder());
-		
+
 		return bankAccounttoAssociate;
 	}
 
+//Method to add a new connection in a user's contacts list
 
-	// put
-	// Check if already in DB
+	public List<AppUser> addConnection(String newContactEmail) throws Exception {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userEmail = authentication.getName();
+		// check if new contact mail exists as AppUser
+		boolean validContact = appUserRepository.existsAppUserByEmail(newContactEmail);
+		if (validContact) {
+//check if the new contact is not already in the connected user's contacts list
+			AppUser connectedUser = appUserService.findByEmail(userEmail);
+			List<AppUser> listOfContacts = connectedUser.getUserContacts();
+			boolean contactAlreadyExisting = listOfContacts.stream()
+					.filter(user -> user.getEmail().equals(newContactEmail)).findAny().isPresent();
 
-	// Delete?
-
-	// Add a contact in a user contacts list
-//		public void addANewContactToMyList(String email) {
-//		appUser.getEmail();
-//		
-	// check if the email exists in DB
-	// check if email is not yet in user's list
-	// appUser.getUserContacts();
-
-	@ModelAttribute("firstName")
-	public List<AppUser> firstName() {
-		return appUserRepository.findAll();
+			if (contactAlreadyExisting) {
+				throw new Exception("this email already belongs to your contacts.");
+			} else {
+				AppUser newContact = appUserService.getAppUserByEmail(newContactEmail);
+				listOfContacts.add(newContact);
+				appUserRepository.save(connectedUser);
+				logger.info("This new connection is now stored in your contact list.");
+			}
+			return listOfContacts;
+		} else {
+			throw new Exception("Please check this email : Unknown user");
+		}
 	}
-
-//Ajouter une connection(nouveau contact)
-	
-	public List<AppUser> addConnection(String userName, String email) {
-		AppUser user = appUserService.findByEmail(userName);
-		List<AppUser> listOfContacts = user.getUserContacts();
-		//check if this connection is not already in the user list
-		boolean existingEmail =appUserRepository.existsListOfcontactsByEmail(email);
-		if(existingEmail=true) {System.out.println("This connection"+" "+email+" is already in your list of contacts");}
-		else {
-		
-		AppUser newContact = appUserService.getAppUserByEmail(email);
-		
-		//newUser.setUserId(1);
-		listOfContacts.add(newContact);
-		appUserRepository.save(listOfContacts);
-		return listOfContacts;}
-		return null;
-	}
-
-//	public List<AppUser> addConnection(String userName, AppUser appUser) {
-//		AppUser user = appUserService.findByEmail(userName);
-//		List<AppUser> listOfContacts = user.getUserContacts();
-//		String newContact = appUser.getEmail();
-//		AppUser newUser = appUserService.findByEmail(newContact);
-//		//newUser.setUserId(1);
-//		listOfContacts.add(newUser);
-//		appUserRepository.save(listOfContacts);
-//		return listOfContacts;
-//	}
-
-
-	
-
-	// POST
-	public ResponseEntity<AppUser> postPerson(AppUser personToPost) {
-
-		return new ResponseEntity<AppUser>(personToPost, HttpStatus.CREATED);
-	}
-
 }

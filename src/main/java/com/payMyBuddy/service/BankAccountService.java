@@ -2,6 +2,8 @@ package com.payMyBuddy.service;
 
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import com.payMyBuddy.repository.BankAccountRepository;
 
 @Service
 public class BankAccountService {
+	private static final Logger logger = LogManager.getLogger("BankAccountService");
 	@Autowired
 	private BankAccountRepository bankAccountRepository;
 	@Autowired

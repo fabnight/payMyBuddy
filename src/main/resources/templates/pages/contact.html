@@ -16,7 +16,7 @@
 				My Buddy</button>
 			<div>
 				<ul class="nav navbar-right">
-					<li class="nav-item"><a class="nav-link active" href="home">Home</a></li>
+					<li class="nav-item"><a class="nav-link active" href="menu">Home</a></li>
 					<li class="nav-item"><a class="nav-link" href="transfer">Transfer</a></li>
 					<li class="nav-item"><a class="nav-link" href="registration">profile</a></li>
 					<li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
@@ -54,11 +54,11 @@
  <div class="col-md-4 "></div>
                             
                 <div class="col-md-4 "></div>
-                <div class="col-md-4 "><label class="control-label pt-4" for="lastName" th:field="*{lastName}"> Name </label></div>
+                <div class="col-md-4 "><label class="control-label pt-4"  for="lastName" th:field="*{lastName}"> Name </label></div>
                 <div class="col-md-4 "></div>
 
                 <div class="col-md-4 "></div>
-                <div class="col-md-4 "><input id="lastName" class="form-control pt-4 "
+                <div class="col-md-4 "><input type="text" id="lastName" class="form-control pt-4 "
                   th:field="*{lastName}" required autofocus="autofocus"/></div>
                 <div class="col-md-4 "></div>
 
@@ -67,7 +67,7 @@
                 <div class="col-md-4 "></div>
 
                 <div class="col-md-4 "></div>
-                <div class="col-md-4 "><input id="email" class="form-control pt-4 " 
+                <div class="col-md-4 "><input type="email"  id="email" class="form-control pt-4 " 
                   th:field="*{email}" required autofocus="autofocus"/></div>
                 <div class="col-md-4 "></div>
 
@@ -86,6 +86,25 @@
 
             </div>
         </form>
+        <div class="tab-content row justify-content-end" id="nav-tabContent">
+					<table class="table table-striped table thead-dark table-bordered">
+						<thead>
+								<th scope="col">Connections</th>
+								<th scope="col">Description</th>
+								<th scope="col">email</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row" th:each="contact : ${contacts}">
+								<td th:utext="${email}">...</td>
+								
+
+							</tr>
+					</div>
+     
+      </div>  
+      <div class="alert alert-warning" th:if="${error!=null}" th:text="${error}"role="alert">Une erreur est survenue >
     </div>
 </div>
 
