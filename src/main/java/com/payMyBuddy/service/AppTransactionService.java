@@ -148,14 +148,26 @@ public class AppTransactionService {
 		return appTransactionRepository.save(appTransaction);
 	}
 
-//method to find the list of transactions for a user
+//method to find the list of transactions per Iban for a user
 
 	public List<AppTransaction> ListOfTransactions(String username) {
 		AppUser user = appUserService.findByEmail(username);
 		String iban = user.getIban();
 		List<AppTransaction> listOfTransactionsByIban = new ArrayList<>();
 		listOfTransactionsByIban = appTransactionRepository.findByReceiverBankAccountNbOrSenderBankAccountNb(iban);
-		listOfTransactionsByIban.getClass();
+	
 		return listOfTransactionsByIban;
 	}
+	
+	//method to find the list of transactions per BankAccount for a user
+
+		public List<AppTransaction> ListOfTransactionsId(String username) {
+			AppUser user = appUserService.findByEmail(username);
+			int id = user.getUserId();
+			List<AppTransaction> listOfTransactionsById = new ArrayList<>();
+			listOfTransactionsById=appTransactionRepository.findByReceiverIdOrSenderId(id);
+			
+		
+			return listOfTransactionsById;
+		}
 }

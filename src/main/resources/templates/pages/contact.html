@@ -51,25 +51,18 @@
         <form th:action="@{/contact}" method="post" th:object="${appUser}">
             <div class="row">
 
- <div class="col-md-4 "></div>
+ <div class="col-md-8 "></div>
                             
-                <div class="col-md-4 "></div>
-                <div class="col-md-4 "><label class="control-label pt-4"  for="lastName" th:field="*{lastName}"> Name </label></div>
-                <div class="col-md-4 "></div>
+               
 
-                <div class="col-md-4 "></div>
-                <div class="col-md-4 "><input type="text" id="lastName" class="form-control pt-4 "
-                  th:field="*{lastName}" required autofocus="autofocus"/></div>
-                <div class="col-md-4 "></div>
+                <div class="col-md-8 "></div>
+                <div class="col-md-8 "><label class="control-label pt-2 " for="email" th:field="*{email}" > Email </label></div>
+                <div class="col-md-8 "></div>
 
-                <div class="col-md-4 "></div>
-                <div class="col-md-4 "><label class="control-label pt-4 " for="email" th:field="*{email}" > Email </label></div>
-                <div class="col-md-4 "></div>
-
-                <div class="col-md-4 "></div>
-                <div class="col-md-4 "><input type="email"  id="email" class="form-control pt-4 " 
-                  th:field="*{email}" required autofocus="autofocus"/></div>
-                <div class="col-md-4 "></div>
+                <div class="col-md-8 "></div>
+                <div class="col-md-8 "><input type="email"  id="email" class="form-control pt-4 " 
+                  th:field="*{email}" placeholder="fill the email of your buddy" required autofocus="autofocus"/></div>
+                <div class="col-md-8 "></div>
 
                             </div>
 

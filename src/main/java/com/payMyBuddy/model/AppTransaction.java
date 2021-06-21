@@ -19,7 +19,6 @@ import com.sun.istack.NotNull;
 @Table
 public class AppTransaction {
 	@ManyToMany
-	// (mappedBy = "appTransactions")
 	List<BankAccount> bankAccounts = new ArrayList<>();
 
 	@Id

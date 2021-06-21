@@ -14,7 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
@@ -27,14 +29,14 @@ import com.sun.istack.NotNull;
 public class BankAccount {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
 	private int id;
 
 	@Column(length = 27)
 	@Size(min = 27, max = 27)
 	@NotNull
 	@NotEmpty(message = "User's iban cannot be empty.")
-	private String iban; // @UniqueConstraint;
+	private String iban;
 
 	@Column(length = 20)
 	private Float balance;
@@ -43,11 +45,12 @@ public class BankAccount {
 	@NotNull
 	private String holder;
 
-	@ManyToMany(mappedBy = "bankAccounts")
-	List<AppUser> appusers = new ArrayList<>();
+	@OneToOne
+	@MapsId
+	@JoinColumn(name = "user_id")
+	private AppUser appUser;
 
 	@ManyToMany(mappedBy = "bankAccounts")
-
 	private List<AppTransaction> appTransactions = new ArrayList<>();
 
 	public int getId() {
@@ -66,12 +69,12 @@ public class BankAccount {
 		this.iban = iban;
 	}
 
-	public List<AppUser> getAppusers() {
-		return appusers;
+	public AppUser getAppUser() {
+		return appUser;
 	}
 
-	public void setAppusers(List<AppUser> appusers) {
-		this.appusers = appusers;
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
 	}
 
 	public List<AppTransaction> getAppTransactions() {

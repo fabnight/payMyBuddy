@@ -6,10 +6,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.payMyBuddy.model.AppUser;
 import com.payMyBuddy.model.BankAccount;
+import com.payMyBuddy.repository.AppUserRepository;
 import com.payMyBuddy.repository.BankAccountRepository;
 
 
@@ -20,6 +23,8 @@ public class BankAccountService {
 	private BankAccountRepository bankAccountRepository;
 	@Autowired
 	AppUserService appUserservice;
+	@Autowired
+	AppUserRepository appUserRepository;
 
 	public Iterable<BankAccount> getBankAccounts() {
 		return bankAccountRepository.findAll();
@@ -44,26 +49,19 @@ public class BankAccountService {
 		
 	}
 
-	// create the App Account from user email
-	public String save(String email, String iban) {
+		// change for a new Iban
+	public String saveNewBankAccount(AppUser appUser, BankAccount bankAccount, String iban, String holder) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userEmail = authentication.getName();
+
+		AppUser appUserByUserName = appUserRepository.findByEmail(userEmail);
+		BankAccount AccountToUpdate = bankAccountRepository.findById(appUserByUserName.getUserId());
 		
-		BankAccount account = new BankAccount();
-		account.setBalance((float) 0);
-		account.setHolder(email);
-		account.setIban("FR9999999999999999999999999");
-		;
-		bankAccountRepository.save(account);
-		return "Your account is saved";
-	}
-
-	// Save a new providing Bank Account
-	public String saveExternalBankAccount(BankAccount bankAccount, String email) {
-
-		BankAccount account = new BankAccount();
-
-		account.setHolder(null);
-		account.setIban(null);
-		bankAccountRepository.save(account);
+		appUserByUserName.setIban(bankAccount.getIban());
+		AccountToUpdate.setIban(bankAccount.getIban());
+		AccountToUpdate.setHolder(holder);
+		bankAccountRepository.save(AccountToUpdate);
+		
 		return "Your account is saved";
 	}
 }

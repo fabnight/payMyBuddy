@@ -76,7 +76,7 @@ public class AppUserService {
 
 	}
 
-	// Method to register a new user
+	// Method to register a new user = attached BankAccount
 
 	@Transactional
 	public AppUser addAppUser(AppUser appUser, BankAccount bankAccount) throws Exception {
@@ -87,39 +87,31 @@ public class AppUserService {
 			throw new Exception("Can not register you, this email is already existing for a user");
 
 		} else {
-			AppUser getUser = userSet(appUser, bankAccount);
-			AppUser newUser = appUserRepository.save(getUser);
-			BankAccount getBankAccount = bankAccountSet(appUser, bankAccount);
-			bankAccountRepository.save(getBankAccount);
-			return newUser;
+			AppUser user = new AppUser();
+			Role role = new Role();
+			role.setId(2);
+			role.setRoleName("User");
+			user.setEmail(appUser.getEmail());
+			user.setPassword(passwordEncoder.encode(appUser.getPassword()));
+			user.setFirstName(appUser.getFirstName());
+			user.setLastName(appUser.getLastName());
+			user.setUsername(appUser.getEmail());
+			user.setIban(appUser.getIban());
+			user.setRole(role);
+			BankAccount bankAccountToCreate = new BankAccount();
+			user.setBankAccount(bankAccountToCreate);
+			bankAccountToCreate.setAppUser(user);
+			bankAccountToCreate.setIban(user.getIban());
+			bankAccountToCreate.setBalance(0.00F);
+			bankAccountToCreate.setHolder(bankAccount.getHolder());
+
+			appUserRepository.save(user);
+			bankAccountRepository.save(bankAccountToCreate);
+			return user;
 		}
 	}
 
-	public AppUser userSet(AppUser appUser, BankAccount bankAccount) {
-		AppUser user = new AppUser();
-		Role role = new Role();
-		role.setId(2);
-		role.setRoleName("User");
-		user.setEmail(appUser.getEmail());
-		user.setPassword(passwordEncoder.encode(appUser.getPassword()));
-		user.setFirstName(appUser.getFirstName());
-		user.setLastName(appUser.getLastName());
-		user.setUsername(appUser.getEmail());
-		user.setIban(appUser.getIban());
-		user.setRole(role);
 
-		return user;
-	}
-
-	// Method to create a new bank account associated to a user
-	public BankAccount bankAccountSet(AppUser appUser, BankAccount bankAccount) {
-		BankAccount bankAccounttoAssociate = new BankAccount();
-		bankAccounttoAssociate.setIban(appUser.getIban());
-		bankAccounttoAssociate.setBalance(0.00F);
-		bankAccounttoAssociate.setHolder(bankAccount.getHolder());
-
-		return bankAccounttoAssociate;
-	}
 
 //Method to add a new connection in a user's contacts list
 
@@ -141,7 +133,6 @@ public class AppUserService {
 				AppUser newContact = appUserService.getAppUserByEmail(newContactEmail);
 				listOfContacts.add(newContact);
 				appUserRepository.save(connectedUser);
-				logger.info("This new connection is now stored in your contact list.");
 			}
 			return listOfContacts;
 		} else {

@@ -19,7 +19,7 @@
 				My Buddy</button>
 			<div>
 				<ul class="nav navbar-right">
-					<li class="nav-item"><a class="nav-link active" href="menu">Home</a></li>
+					<li class="nav-item"><a class="nav-link active" href="home">Home</a></li>
 
 					</li>
 				</ul>
@@ -31,7 +31,7 @@
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 
-				<h2 class="offset-md-10">Registration</h2>
+				<h2 class="offset-md-10">Profile Registration</h2>
 			</div>
 		</div>
 		<form th:action="@{/registration}" method='POST' th:object="${appUser}">
@@ -95,8 +95,8 @@
 		</form>
 	</div>
 	<!-- success message -->
-	<div th:if="${param.success}">
-		<p style="font-size: 20; color: rgb(0, 255, 128);" align="center">You've been successfully registered!
+	<div th:if="${param.successRegistration}">
+		<div class="alert alert-info"align="center">You've been successfully registered! Please click on Home for login.
 		
 	</div>
 	</div>

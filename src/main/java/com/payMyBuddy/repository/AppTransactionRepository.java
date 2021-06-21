@@ -15,6 +15,11 @@ import com.payMyBuddy.model.BankAccount;
 public interface AppTransactionRepository extends CrudRepository<AppTransaction, Integer>  {
 	AppTransaction findById(int id);
 
+	//to find a list of transactions relating to a specific Iban
 	@Query("SELECT u FROM AppTransaction u WHERE u.receiverBankAccountNb=:receiverBankAccountNbOrsenderBankAccountNb OR u.senderBankAccountNb=:receiverBankAccountNbOrsenderBankAccountNb")
 	List<AppTransaction> findByReceiverBankAccountNbOrSenderBankAccountNb(String receiverBankAccountNbOrsenderBankAccountNb);
+	
+	//to find a list of transactions relating to a specific bankAccount
+	@Query("SELECT u FROM AppTransaction u WHERE u.receiverId=:receiverIdOrsenderId OR u.senderId=:receiverIdOrsenderId")
+	List<AppTransaction> findByReceiverIdOrSenderId(int receiverIdOrsenderId);
 }

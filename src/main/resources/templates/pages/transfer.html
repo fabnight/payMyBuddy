@@ -41,17 +41,17 @@
 
 	<!-- success message -->
 	<div class="container">
-	
+
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
-				<div th:if="${param.success}">
+				<div th:if="${param.successTransfer}">
 					<div class="alert alert-info">You've successfully transfered your money!</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="alert alert-warning" th:if="${error!=null}" th:text="${error}"role="alert">Une erreur est survenue >
-    </div>
+	<div class="alert alert-warning" th:if="${error!=null}" th:text="${error}" role="alert">Une erreur est survenue >
+	</div>
 	<div class="py-1">
 		<div class="container">
 			<div class="row">
@@ -79,6 +79,7 @@
 
 								<div class="row pt-8">
 									<label class="control-label"> Select a connection </label>
+
 								</div>
 
 								<div class="row">
@@ -86,13 +87,13 @@
 
 								</div>
 								<div class="row pt-2">
-								<label class="col-md-2 control-label pt-1 " for="designation"> CONNECTION </label>
+									<label class="col-md-2 control-label pt-1 " for="designation"> CONNECTION </label>
 									<input id="designation" class="form-control " th:field="*{receiverBankAccountNb}"
 										required autofocus="autofocus" />
 									<label class="col-md-6 control-label pt-1 " for="designation"> Description </label>
 									<input id="designation" class="form-control " th:field="*{operationDescription}"
 										placeholder="for example: 'gift Alex'" required autofocus="autofocus" />
-									
+
 								</div>
 								<div class="row pt-2">
 									<label class="col-md-4 control-label pt-1 ">Amount</label>
@@ -112,76 +113,92 @@
 									</div>
 								</div>
 					</form>
-					</div>
-					</div>
-					</div>
-					</div>
-					</div>
-					
-					<table border="1">
-					<tr>
-					<th>email</th>
-					<th>name</th>
-					</tr>
-					<tr th:each = "contact : ${contacts}">
-					<td th:utext="{contact.email}">...</td>
-					<td th:utext="{contact.lastName}">...</td>
-					</tr>
-					</table>
-					
-					<div class="py-3">
-						<div class="container">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									<h5 class="">My Transactions<br></h5>
-								</div>
-							</div>
-						</div>
-					</div>
+					<form class="form-inline" th:action="@{/transfer}" method="POST" th:object="${appTransactions}">
+						<tr th:each="appTransaction: ${appTransactions}">
+							<div class="my-3 py-1">
+								<div class="container">
 
-					<div class="py-2">
-						<div class="container">
-							<div class="row">
-								<div class="col-md-4 bg-success">
-									<h6 class="text-center">Connections<br></h6>
+									<div class="row pt-8">
+										<label class="control-label"> Select a connection </label>
+										<select class="form-control " th:action="@{/transfer}" method="POST"
+											autofocus="autofocus">
 
-								</div>
-								<div class="col-md-4 bg-success">
-									<h6 class="text-center bg-success">Description</h6>
-								</div>
-								<div class="col-md-4 bg-success">
-									<h6 class="text-center">Amount<br></h6>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="">
-						<div class="container">
-							<div class="row" data-th-each="p : ${ foreigntransactions }">
-								<div class="col-md-4 text-center"></div>
-								<div class="col-md-4 text-center"></div>
-								<div class="col-md-4 text-center"></div>
-							</div>
-						</div>
-					</div>
+											<!-- success message<option th:value="*{appUser.UserContact}" th:field="*{appUser.UserContact}"></option>
+												</select>-->
+									</div>
+
+									<div class="row">
+										<select class="form-control ">
+
+									</div>
+									<div class="row pt-2">
+										<label class="col-md-2 control-label pt-1 " for="designation"> CONNECTION
+										</label>
+										<input id="receiverBankAccountNb" class="form-control "
+											th:field="*{appTransaction.receiverBankAccountNb}" required
+											autofocus="autofocus" />
+										<label class="col-md-6 control-label pt-1 " for="designation"> Description
+										</label>
+										<input id="operationDescription" class="form-control "
+											th:field="*{appTransaction.operationDescription}"
+											placeholder="for example: 'gift Alex'" required autofocus="autofocus" />
+
+									</div>
+									<div class="row pt-2">
+										<label class="col-md-4 control-label pt-1 ">Amount</label>
+										<div class="form-group pl-2 pt-8">
+											<div class="input-group"><input type="number" min="0.01" step=".01"
+													value="0.01" placeholder="(min amount=0,01€)" class="form-control  "
+													th:field="*{appTransaction.amount}" required autofocus="autofocus"
+													id="inlineFormInputGroup" </div>
+
+												<div class="col-md-3 pt-3 pl-2">
+													<button type="submit"
+														class="btn btn-success btn-block my-1 ">Pay</button>
+												</div>
 
 
-					<div class="py-5">
-						<div class="container">
-							<div class="row">
-								<div class="col-md-4"></div>
-								<div class="col-md-4" th:if="${totalPages gt 0}">
-									<ul class="pagination justify-content-center font-weight-medium">
-										<li class="page-item" th:classappend="${currentPage eq 0} ? 'disabled'">
-											<a class="page-link svg-icon"
-												th:href="@{transactions?page={id}(id=${currentPage lt 2 ? 1 : currentPage})}"
-												aria-label="Previous" title="Previous Page" rel="tooltip">
-												<span aria-hidden="true" width="20" height="20"><i
-														class="fa fa-chevron-left"></i></span>
-											</a>
-										</li>
+											</div>
+										</div>
+									</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
 
-										<li class="page-item" th:classappend="${i eq currentPage+1} ? 'active'" th:each="i : ${#numbers.sequence( 1, totalPages > 5 + currentPage ? currentPage + 5 : totalPages, 1)}">
+	<table border="1">
+		<tr>
+			<th>email</th>
+			<th>name</th>
+		</tr>
+		<tr th:each="uscrContact : ${userContacts}">
+			<td th:text="${userContact.email}">...</td>
+			<td th:text="${userContact.lastName}">...</td>
+		</tr>
+	</table>
+
+
+
+
+
+	<div class="py-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4"></div>
+				<div class="col-md-4" th:if="${totalPages gt 0}">
+					<ul class="pagination justify-content-center font-weight-medium">
+						<li class="page-item" th:classappend="${currentPage eq 0} ? 'disabled'">
+							<a class="page-link svg-icon"
+								th:href="@{transactions?page={id}(id=${currentPage lt 2 ? 1 : currentPage})}"
+								aria-label="Previous" title="Previous Page" rel="tooltip">
+								<span aria-hidden="true" width="20" height="20"><i
+										class="fa fa-chevron-left"></i></span>
+							</a>
+						</li>
+
+						<li class="page-item" th:classappend="${i eq currentPage+1} ? 'active'" th:each="i : ${#numbers.sequence( 1, totalPages > 5 + currentPage ? currentPage + 5 : totalPages, 1)}">
                         <a class="page-link" th:href="@{transactions?page={id}(id=${i})}" th:text="${i}"
                            th:title="${'Page '+ i}"
                            rel="tooltip">
@@ -208,6 +225,38 @@
         </div>
     </div>
 </div>
+<div class="py-3">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-left">
+					<h5 class="">My Transactions<br></h5>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="container-fluid col-md-40 text-right">
 
+<table border="1">
+				
+					<div class="col-md-40 bg-success">
+						<h6 class="text-center" th:action="@{/transfer}" method="POST" th:object="${appTransactions}">
+							<tr th:each="appTransaction: ${appTransactions}"  class="row">
+							
+							<div class="col-md-40 bg-success">
+						<h6 class="text-center bg-success">Connections</h6>
+						<td th:text="${appTransaction.receiverBankAccountNb}">..</td>
+					</div>
+					<div class="col-md-40 bg-success">
+						<h6 class="text-center bg-success">Description</h6>
+						<td th:text="${appTransaction.operationDescription}">..</td>
+					</div>
+					<div class="col-md-40 bg-success">
+						<h6 class="text-center">Amount<br></h6>
+						<td th:text="${appTransaction.amount}">..</td>
+					</div>
+				</div>
+				</tr>
+	</table>
+			</div>
 </body>
 </html>

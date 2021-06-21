@@ -85,6 +85,7 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 //		List<AppUser> contact = appUser.getUserContacts();
 //		System.out.println(contact.get(1));
 //	
-	
+//		List<AppTransaction> listOfTransactionsById =appTransactionService.ListOfTransactions("fgarnier@hotmail.com");
+//		System.out.println(listOfTransactionsById);
 	}
 }

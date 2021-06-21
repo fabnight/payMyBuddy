@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -25,14 +26,14 @@ import com.sun.istack.NotNull;
 public class AppUser {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int userId;
 
-	@ManyToMany
-	private List<BankAccount> bankAccounts = new ArrayList<>();
+	@OneToOne(mappedBy="appUser", cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	private BankAccount bankAccount;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	//@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
 	private List<AppUser> userContacts = new ArrayList<>();
 
 	@OneToOne(fetch = FetchType.EAGER)
@@ -51,10 +52,10 @@ public class AppUser {
 
 	@Column(name = "username", length = 65)
 	private String username;
-	
-	@Column(length = 115, unique=true)
+
+	@Column(length = 115, unique = true)
 	@NotEmpty(message = "User's Email cannot be empty.")
-		private String email;
+	private String email;
 
 	@Column(length = 80)
 	@NotNull
@@ -62,7 +63,7 @@ public class AppUser {
 	private String password = "a";
 
 	@Column(length = 27)
-	 @Size(min = 27, max = 27)
+	@Size(min = 27, max = 27)
 	@NotNull
 	@NotEmpty(message = "User's iban cannot be empty.")
 	private String iban;
@@ -115,12 +116,12 @@ public class AppUser {
 		this.iban = iban;
 	}
 
-	public List<BankAccount> getBankAccounts() {
-		return bankAccounts;
+	public BankAccount getBankAccount() {
+		return bankAccount;
 	}
 
-	public void setBankAccounts(List<BankAccount> bankAccounts) {
-		this.bankAccounts = bankAccounts;
+	public void setBankAccount(BankAccount bankAccount) {
+		this.bankAccount = bankAccount;
 	}
 
 	public List<AppUser> getUserContacts() {
