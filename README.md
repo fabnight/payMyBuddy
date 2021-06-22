@@ -35,7 +35,7 @@ A step by step series of examples that tell you how to get a development env run
 
 ### Running App
 
-Post installation of Java and Maven and Spring boot, you will have to copy the file [data.json](https://s3-eu-west-1.amazonaws.com/course.oc-static.com/projects/DA+Java+EN/P5+/data.json) and paste it the following repertory : src/main/ressources of the IDE.
+
 
 In main ressource, you will find details about the script sql and the application properties.
 you can excecute following instructions in order to charge data in the database
