@@ -1,4 +1,4 @@
-![diagramme uml paymybuddy](https://user-images.githubusercontent.com/58448176/122891013-79d26300-d344-11eb-973a-9931f89874e8.png)
+![Physical data model paymybuddy](https://user-images.githubusercontent.com/58448176/122891013-79d26300-d344-11eb-973a-9931f89874e8.png)
 # PayMyBuddy Application
 
 Pay My Buddy is a web application coded in Java for purpose to facilitate money transactions between distant persons.
@@ -60,6 +60,7 @@ Run the PayMyBuddyApplication.java to launch the application.
 
 ### Physical data model paymybuddy :
 
-![diagramme uml paymybuddy](diagramme uml paymybuddy.png)
+![physical Data Model paymybuddy](diagramme uml paymybuddy.png)
 
 ### UML diagram paymybuddy :
+![P6_04_DIAGRAMME_UML](P6_04_DIAGRAMME_UML.png)
