@@ -17,6 +17,7 @@ import com.payMyBuddy.model.AppTransaction;
 import com.payMyBuddy.model.AppUser;
 import com.payMyBuddy.model.BankAccount;
 import com.payMyBuddy.repository.AppUserRepository;
+import com.payMyBuddy.repository.BankAccountRepository;
 import com.payMyBuddy.service.AppTransactionService;
 import com.payMyBuddy.service.BankAccountService;
 
@@ -24,6 +25,8 @@ import com.payMyBuddy.service.BankAccountService;
 public class MenuController {
 	@Autowired
 	BankAccountService bankAccountService;
+	@Autowired
+	BankAccountRepository bankAccountRepository;
 	@Autowired
 	AppUserRepository appUserRepository;
 	@Autowired
@@ -68,16 +71,14 @@ public class MenuController {
 			}
 			if (action.equals("withdraw")) {
 				appTransactionService.savewithdraw(userEmail, appTransaction.getAmount());
-				Float balance = bankAccount.getBalance();
-				model.addAttribute("balance", balance);
+				//Float balance = bankAccount.getBalance();
+				
 			}
 			if (action.equals("fund")) {
 				appTransactionService.fundAppAccount(userEmail, appTransaction.getAmount());
 
-				Float balance2 = bankAccount.getBalance();
-				model.addAttribute("balance", balance2);
 			}
-
+			model.addAttribute("balance", bankAccountService.balance(iban));
 			List<AppTransaction> transactions = appTransactionService.ListOfTransactions(userEmail);
 			model.addAttribute("transactions", transactions);
 

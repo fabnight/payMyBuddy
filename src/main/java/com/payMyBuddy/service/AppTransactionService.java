@@ -1,34 +1,26 @@
 package com.payMyBuddy.service;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.payMyBuddy.dto.BankAccountDto;
-import com.payMyBuddy.dto.AppTransactionDto;
+import com.payMyBuddy.constants.TransactionConstants;
 import com.payMyBuddy.model.AppTransaction;
 import com.payMyBuddy.model.AppUser;
 import com.payMyBuddy.model.BankAccount;
 import com.payMyBuddy.repository.AppTransactionRepository;
 import com.payMyBuddy.repository.AppUserRepository;
 import com.payMyBuddy.repository.BankAccountRepository;
-import com.payMyBuddy.constants.TransactionConstants;
 
 @Transactional(rollbackOn = Exception.class)
 @Service
 public class AppTransactionService {
-	private static final Logger logger = LogManager.getLogger("AppTransactionService");
+
 	@Autowired
 	private AppTransactionRepository appTransactionRepository;
 	@Autowired
@@ -39,9 +31,6 @@ public class AppTransactionService {
 	private AppUserRepository appUserRepository;
 	@Autowired
 	private AppUserService appUserService;
-
-	@Autowired
-	private AppTransactionDto appTransactionDto;
 
 	public Iterable<AppTransaction> getAppTransactions() {
 		return appTransactionRepository.findAll();
@@ -90,7 +79,7 @@ public class AppTransactionService {
 	}
 
 	// method to withdraw money from AppAccount to BankAccount
-	public AppTransaction savewithdraw(String username, Float transactionAmount) throws Exception {
+	public Float savewithdraw(String username, Float transactionAmount) throws Exception {
 		AppUser user = appUserService.findByEmail(username);
 		AppTransaction appTransaction = new AppTransaction();
 
@@ -114,16 +103,20 @@ public class AppTransactionService {
 			appTransaction.setSenderBankAccountNb(user.getIban());
 			bankAccountRepository.save(bankAccount);
 			appTransactionRepository.save(appTransaction);
+
 		} else {
 			float due = transactionAmount + transactionFees;
 			float missing = due - bankAccount.getBalance();
+
 			throw new Exception("Not enough credit available. Due = " + due + "€, " + "missing = " + missing + "€");
+
 		}
-		return appTransaction;
+		Float newBalance = bankAccountService.balance(user.getIban());
+		return newBalance;
 	}
 
 	// method to provide money from BankAccount to AppAccount
-	public AppTransaction fundAppAccount(String username, Float transactionAmount) throws Exception {
+	public Float fundAppAccount(String username, Float transactionAmount) throws Exception {
 		AppUser user = appUserService.findByEmail(username);
 		AppTransaction appTransaction = new AppTransaction();
 
@@ -141,11 +134,13 @@ public class AppTransactionService {
 			appTransaction.setSenderId(user.getUserId());
 			appTransaction.setSenderBankAccountNb(user.getIban());
 			bankAccountRepository.save(bankAccount);
-			
+			appTransactionRepository.save(appTransaction);
 		} else {
 			throw new Exception("Transaction failed");
 		}
-		return appTransactionRepository.save(appTransaction);
+		Float newBalance = bankAccountService.balance(user.getIban());
+		return newBalance;
+
 	}
 
 //method to find the list of transactions per Iban for a user
@@ -155,19 +150,18 @@ public class AppTransactionService {
 		String iban = user.getIban();
 		List<AppTransaction> listOfTransactionsByIban = new ArrayList<>();
 		listOfTransactionsByIban = appTransactionRepository.findByReceiverBankAccountNbOrSenderBankAccountNb(iban);
-	
+
 		return listOfTransactionsByIban;
 	}
-	
-	//method to find the list of transactions per BankAccount for a user
 
-		public List<AppTransaction> ListOfTransactionsId(String username) {
-			AppUser user = appUserService.findByEmail(username);
-			int id = user.getUserId();
-			List<AppTransaction> listOfTransactionsById = new ArrayList<>();
-			listOfTransactionsById=appTransactionRepository.findByReceiverIdOrSenderId(id);
-			
-		
-			return listOfTransactionsById;
-		}
+	// method to find the list of transactions per BankAccount for a user
+
+	public List<AppTransaction> ListOfTransactionsId(String username) {
+		AppUser user = appUserService.findByEmail(username);
+		int id = user.getUserId();
+		List<AppTransaction> listOfTransactionsById = new ArrayList<>();
+		listOfTransactionsById = appTransactionRepository.findByReceiverIdOrSenderId(id);
+
+		return listOfTransactionsById;
+	}
 }

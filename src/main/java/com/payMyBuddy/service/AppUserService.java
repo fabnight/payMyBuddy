@@ -3,44 +3,30 @@ package com.payMyBuddy.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.payMyBuddy.dto.AppUserDto;
 import com.payMyBuddy.model.AppUser;
 import com.payMyBuddy.model.BankAccount;
 import com.payMyBuddy.model.Role;
 import com.payMyBuddy.repository.AppUserRepository;
 import com.payMyBuddy.repository.BankAccountRepository;
-import com.payMyBuddy.web.controller.HomeController;
 
 @Service
 public class AppUserService {
-	private static final Logger logger = LogManager.getLogger("AppUserService");
+	
 	@Autowired
 	private AppUserRepository appUserRepository;
 	@Autowired
 	private AppUserService appUserService;
-	@Autowired
-	private BankAccountService bankAccountService;
+	
 	@Autowired
 	private BankAccountRepository bankAccountRepository;
-	@Autowired
-	private HomeController homeController;
+	
 //	@Autowired
 //	private Role role;
 	@Autowired
@@ -110,8 +96,6 @@ public class AppUserService {
 			return user;
 		}
 	}
-
-
 
 //Method to add a new connection in a user's contacts list
 

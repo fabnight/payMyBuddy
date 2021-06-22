@@ -27,10 +27,6 @@
 							<div class="dropdown-menu">
 
 							</div>
-							<h6 class="dropdown-header">Dropdown header<h6>
-									<a class="dropdown-item" href="#"
-										th:object="${ReceiverBankAccountNb}">pmartin@gmail.com </a>
-									<a class="dropdown-item" href="#">user@gmail.com</a>
 						</form>
 					</li>
 				</ul>
@@ -77,19 +73,19 @@
 						<div class="my-3 py-1">
 							<div class="container">
 
-								<div class="row pt-8">
-									<label class="control-label"> Select a connection </label>
+								<form name='f' th:object="${personForm}" method='POST'>
+									<div class="col-lg-3" th:object="${test}">
+										<select class="form-control" id="testOrder" name="receiverBankAccountNb">
+											<option value="*{userContact.email}">Select Connection</option>
+											<option th:each="userContact : ${userContacts}"
+												th:text="${userContact.email}"></option>
 
-								</div>
+										</select>
+									</div>
 
-								<div class="row">
-									<select class="form-control ">
-
-								</div>
+								</form>
 								<div class="row pt-2">
-									<label class="col-md-2 control-label pt-1 " for="designation"> CONNECTION </label>
-									<input id="designation" class="form-control " th:field="*{receiverBankAccountNb}"
-										required autofocus="autofocus" />
+
 									<label class="col-md-6 control-label pt-1 " for="designation"> Description </label>
 									<input id="designation" class="form-control " th:field="*{operationDescription}"
 										placeholder="for example: 'gift Alex'" required autofocus="autofocus" />
@@ -107,79 +103,48 @@
 												<button type="submit"
 													class="btn btn-success btn-block my-1 ">Pay</button>
 											</div>
-
-
-										</div>
-									</div>
-								</div>
 					</form>
-					<form class="form-inline" th:action="@{/transfer}" method="POST" th:object="${appTransactions}">
-						<tr th:each="appTransaction: ${appTransactions}">
-							<div class="my-3 py-1">
-								<div class="container">
 
-									<div class="row pt-8">
-										<label class="control-label"> Select a connection </label>
-										<select class="form-control " th:action="@{/transfer}" method="POST"
-											autofocus="autofocus">
-
-											<!-- success message<option th:value="*{appUser.UserContact}" th:field="*{appUser.UserContact}"></option>
-												</select>-->
-									</div>
-
-									<div class="row">
-										<select class="form-control ">
-
-									</div>
-									<div class="row pt-2">
-										<label class="col-md-2 control-label pt-1 " for="designation"> CONNECTION
-										</label>
-										<input id="receiverBankAccountNb" class="form-control "
-											th:field="*{appTransaction.receiverBankAccountNb}" required
-											autofocus="autofocus" />
-										<label class="col-md-6 control-label pt-1 " for="designation"> Description
-										</label>
-										<input id="operationDescription" class="form-control "
-											th:field="*{appTransaction.operationDescription}"
-											placeholder="for example: 'gift Alex'" required autofocus="autofocus" />
-
-									</div>
-									<div class="row pt-2">
-										<label class="col-md-4 control-label pt-1 ">Amount</label>
-										<div class="form-group pl-2 pt-8">
-											<div class="input-group"><input type="number" min="0.01" step=".01"
-													value="0.01" placeholder="(min amount=0,01€)" class="form-control  "
-													th:field="*{appTransaction.amount}" required autofocus="autofocus"
-													id="inlineFormInputGroup" </div>
-
-												<div class="col-md-3 pt-3 pl-2">
-													<button type="submit"
-														class="btn btn-success btn-block my-1 ">Pay</button>
-												</div>
-
-
-											</div>
-										</div>
-									</div>
-					</form>
 				</div>
 			</div>
 		</div>
+
+	</div>
+	</div>
+	</div>
 	</div>
 	</div>
 
-	<table border="1">
+<div class="tab-content row justify-content-center" id="nav-tabContent">
+	<table class="table table-striped table thead-dark table-bordered">
+	<h5 class="">My Connections<br></h5>
 		<tr>
 			<th>email</th>
 			<th>name</th>
 		</tr>
-		<tr th:each="uscrContact : ${userContacts}">
+		<tr th:each="userContact : ${userContacts}">
 			<td th:text="${userContact.email}">...</td>
-			<td th:text="${userContact.lastName}">...</td>
+			<td th:text="${userContact.firstName}+' '+${userContact.lastName}">...</td>
 		</tr>
 	</table>
+	<div class="tab-content row justify-content-center" id="nav-tabContent">
 
+		<table class="table table-striped table thead-dark table-bordered">
+	</div>
+	<h5 class="">My Transactions<br></h5>
 
+	</div>
+	<tr>
+		<th>connection</th>
+		<th>description</th>
+		<th>amount</th>
+	</tr>
+	<tr th:each="appTransaction : ${appTransactions}">
+		<td th:text="${appTransaction.receiverBankAccountNb}">...</td>
+		<td th:text="${appTransaction.operationDescription}">...</td>
+		<td th:text="${appTransaction.amount}">...</td>
+	</tr>
+	</table>
 
 
 
@@ -229,34 +194,11 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 text-left">
-					<h5 class="">My Transactions<br></h5>
+					
 				</div>
 			</div>
 		</div>
-	</div>
-<div class="container-fluid col-md-40 text-right">
+	
 
-<table border="1">
-				
-					<div class="col-md-40 bg-success">
-						<h6 class="text-center" th:action="@{/transfer}" method="POST" th:object="${appTransactions}">
-							<tr th:each="appTransaction: ${appTransactions}"  class="row">
-							
-							<div class="col-md-40 bg-success">
-						<h6 class="text-center bg-success">Connections</h6>
-						<td th:text="${appTransaction.receiverBankAccountNb}">..</td>
-					</div>
-					<div class="col-md-40 bg-success">
-						<h6 class="text-center bg-success">Description</h6>
-						<td th:text="${appTransaction.operationDescription}">..</td>
-					</div>
-					<div class="col-md-40 bg-success">
-						<h6 class="text-center">Amount<br></h6>
-						<td th:text="${appTransaction.amount}">..</td>
-					</div>
-				</div>
-				</tr>
-	</table>
-			</div>
 </body>
 </html>

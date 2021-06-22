@@ -3,24 +3,23 @@ package com.payMyBuddy.web.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.payMyBuddy.dto.AppUserDto;
 import com.payMyBuddy.model.AppUser;
 import com.payMyBuddy.service.AppUserService;
 
-@RestController
+@Controller
 public class ContactController {
 
 	@Autowired
 	AppUserService appUserService;
 	@Autowired
 	AppUserDto appUserDto;
-	
 
 	@GetMapping("/contact")
 	public String contact(AppUser appUser, Model model) {

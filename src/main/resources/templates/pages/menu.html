@@ -27,9 +27,9 @@
 </head>
 
 <body>
-	
 
-	
+
+
 	<!-- Navigation menu -->
 	<nav class="navbar navbar-expand ">
 		<div class="container-fluid">
@@ -52,10 +52,10 @@
 	</nav>
 	<!-- End Navigation menu -->
 	<div th:if="${param.successPayment}">
-					<div class="alert alert-info">Operation realised with success!</div>
-				</div>
-<div class="alert alert-warning" th:if="${error!=null}" th:text="${error}"role="alert">Une erreur est survenue >
-</div>
+		<div class="alert alert-info">Operation realised with success!</div>
+	</div>
+	<div class="alert alert-warning" th:if="${error!=null}" th:text="${error}" role="alert">Une erreur est survenue >
+	</div>
 	<div class="row mt-8 mb-12 justify-content-center">
 		<span class="badge badge-pill badge-info">
 			<h2 th:text="'  Hello '+${username}+'!'+' '+'Your balance amount'+' '+'='+' '+${balance}+'€'"> Hello user!
@@ -63,7 +63,7 @@
 		</span>
 
 		<div class="ml-4">
-		
+
 		</div>
 	</div>
 	<div class="row justify-content-center">
@@ -124,14 +124,14 @@
 												<button type="submit" name="action" value="withdraw"
 													class="btn  btn-block btn-success">Withdraw</button>
 										</div>
-										
+
 										<div class="mr-2">
 											<!-- Button -->
 											<button type="button" class="btn btn-primary" data-toggle="modal"
 												data-target="#popup">Amend your bank
 												account</button>
 										</div>
-										
+
 								</form>
 
 								<!-- Pop-up add bank details -->
@@ -142,8 +142,7 @@
 												<p>Bank details</p>
 											</div>
 											<div class="modal-body">
-												<form th:action="@{/menu}" method="POST"
-													th:object="${bankAccount}">
+												<form th:action="@{/menu}" method="POST" th:object="${bankAccount}">
 													<div class="form-group">
 
 														<div class="form-group">
@@ -156,14 +155,14 @@
 															<div class="form-group">
 																<label for="holder">Holder</label>
 																<input type="text" class="form-control" id="holder"
-																	placeholder="MR and MRS SMITH" field="*{holder}" name="holder"
-																	required autofocus="autofocus">
+																	placeholder="MR and MRS SMITH" field="*{holder}"
+																	name="holder" required autofocus="autofocus">
 															</div>
 
 															<p></p>
-		
-															<button type="submit"
-																class="btn btn-primary"name="action" value="iban">Submit</button>
+
+															<button type="submit" class="btn btn-primary" name="action"
+																value="iban">Submit</button>
 
 												</form>
 
@@ -179,64 +178,41 @@
 						</div>
 					</div>
 				</div>
-				
-				</div>
+
 			</div>
-			 <form th:action="@{/menu}" method="POST"
-													th:object="${appTransaction}">
-													<div class="form-group">
-			<div class="col-1  content row justify-content-end>" <h4>Your last transactions:</h4>
-				<div class="tab-content row justify-content-end" id="nav-tabContent">
-					<table class="table table-striped table thead-dark table-bordered">
-						<thead>
-								<th scope="col">Connections</th>
-								<th scope="col">Description</th>
-								<th scope="col">Amount</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row" th:each="appTransaction : ${appTransactions}">
-								<td th:utext="${appTransaction.receiverBankAccountNb}">...</td>
-								<td th:utext="${appTransaction.operationDescription}">...</td>
-								<td th:utext="${appTransaction.amount}">...</td>
-
-
-							</tr>
-					</div>		
-</div>
-</form>
-	</div>
-			</div>
-
-		</div>	
-						
-		<!-- onglet withdraw -->
-		<div class="tab-pane fade" id="list-withdraw" role="tabpanel" aria-labelledby="list-withdraw-list">
-			<p>Please complete amount and withdraw button :</p>
-			<form class="form-inline">
-				<div class="mr-2 w-10">
-
-
-					<div class="mr-2 w-10">
-						<label for="example-number-input"></label>
-						<input class="form-control " type="number" value="0" id="example-number-input">
-					</div>
-					<div class="mr-2">
-						<button type="submit" class="btn  btn-block btn-success">Withdraw</button>
-					</div>
-
-			</form>
-	
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
 		</div>
+
+	</div>
+	</div>
+
+	</div>
+
+	<!-- onglet withdraw -->
+	<div class="tab-pane fade" id="list-withdraw" role="tabpanel" aria-labelledby="list-withdraw-list">
+		<p>Please complete amount and withdraw button :</p>
+		<form class="form-inline">
+			<div class="mr-2 w-10">
+
+
+				<div class="mr-2 w-10">
+					<label for="example-number-input"></label>
+					<input class="form-control " type="number" value="0" id="example-number-input">
+				</div>
+				<div class="mr-2">
+					<button type="submit" class="btn  btn-block btn-success">Withdraw</button>
+				</div>
+
+		</form>
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+	</div>
+	</div>
+	</div>
+	</div>
+
+	</div>
 
 	</div>
 	</div>

@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -29,7 +28,7 @@ public class AppUser {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int userId;
 
-	@OneToOne(mappedBy="appUser", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "appUser", cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn
 	private BankAccount bankAccount;
 

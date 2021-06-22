@@ -52,13 +52,17 @@ public class TransferController {
 		model.addAttribute("balance", bankAccount.getBalance());
 
 		model.addAttribute("appUser", appUser);
-		// model.addAttribute("contact", appUserByUserName.getUserContacts());
+
 		AppUser connectedUser = appUserService.findByEmail(userEmail);
-		List<AppUser> contact = appUserRepository.findByUserContacts(connectedUser);
+
+		// List<AppUser> contact = appUserRepository.findUserContacts(connectedUser);
+		List<AppUser> contact = connectedUser.getUserContacts();
 		model.addAttribute("userContacts", contact);
+
 		List<AppTransaction> appTransactionList = new ArrayList<>();
 		appTransactionList = appTransactionService.ListOfTransactionsId(userEmail);
 		model.addAttribute("appTransactions", appTransactionList);
+
 		return "pages/transfer";
 	}
 
@@ -70,7 +74,8 @@ public class TransferController {
 			String userEmail = authentication.getName();
 			AppUser appUserByUserName = appUserRepository.findByEmail(userEmail);
 			String iban = appUserByUserName.getIban();
-			model.addAttribute("ReceiverBankAccountNb", appTransaction.getReceiverBankAccountNb());
+
+			model.addAttribute("receiverBankAccountNb", appTransaction.getReceiverBankAccountNb());
 			BankAccount bankAccount = bankAccountService.getBankAccountByIban(iban);
 			AppTransaction payment = appTransactionService.savePayment(userEmail,
 					appTransaction.getReceiverBankAccountNb(), appTransaction.getAmount(),
@@ -84,10 +89,11 @@ public class TransferController {
 			model.addAttribute("balance", bankAccount.getBalance());
 
 			AppUser connectedUser = appUserService.findByEmail(userEmail);
-			List<AppUser> contact = appUserRepository.findByUserContacts(connectedUser);
+			// List<AppUser> contact = appUserRepository.findUserContacts(connectedUser);
+			List<AppUser> contact = connectedUser.getUserContacts();
 			model.addAttribute("userContacts", contact);
-			List<AppTransaction> appTransactionList = new ArrayList<>();
-			appTransactionList = appTransactionService.ListOfTransactionsId(userEmail);
+
+			List<AppTransaction> appTransactionList = appTransactionService.ListOfTransactionsId(userEmail);
 			model.addAttribute("appTransactions", appTransactionList);
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
