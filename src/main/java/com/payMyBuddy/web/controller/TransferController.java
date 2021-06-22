@@ -55,7 +55,6 @@ public class TransferController {
 
 		AppUser connectedUser = appUserService.findByEmail(userEmail);
 
-		// List<AppUser> contact = appUserRepository.findUserContacts(connectedUser);
 		List<AppUser> contact = connectedUser.getUserContacts();
 		model.addAttribute("userContacts", contact);
 
@@ -89,7 +88,6 @@ public class TransferController {
 			model.addAttribute("balance", bankAccount.getBalance());
 
 			AppUser connectedUser = appUserService.findByEmail(userEmail);
-			// List<AppUser> contact = appUserRepository.findUserContacts(connectedUser);
 			List<AppUser> contact = connectedUser.getUserContacts();
 			model.addAttribute("userContacts", contact);
 

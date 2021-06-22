@@ -18,17 +18,15 @@ import com.payMyBuddy.repository.BankAccountRepository;
 
 @Service
 public class AppUserService {
-	
+
 	@Autowired
 	private AppUserRepository appUserRepository;
 	@Autowired
 	private AppUserService appUserService;
-	
+
 	@Autowired
 	private BankAccountRepository bankAccountRepository;
-	
-//	@Autowired
-//	private Role role;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -62,7 +60,7 @@ public class AppUserService {
 
 	}
 
-	// Method to register a new user = attached BankAccount
+	// Method to register a new user + his attached BankAccount
 
 	@Transactional
 	public AppUser addAppUser(AppUser appUser, BankAccount bankAccount) throws Exception {
@@ -71,7 +69,7 @@ public class AppUserService {
 // Check if already in DB
 		if (alreadyExistingUser) {
 			throw new Exception("Can not register you, this email is already existing for a user");
-
+// User set
 		} else {
 			AppUser user = new AppUser();
 			Role role = new Role();
@@ -84,6 +82,7 @@ public class AppUserService {
 			user.setUsername(appUser.getEmail());
 			user.setIban(appUser.getIban());
 			user.setRole(role);
+// bankAccount creation fir the new user
 			BankAccount bankAccountToCreate = new BankAccount();
 			user.setBankAccount(bankAccountToCreate);
 			bankAccountToCreate.setAppUser(user);

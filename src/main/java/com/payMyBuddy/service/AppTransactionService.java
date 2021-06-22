@@ -44,17 +44,21 @@ public class AppTransactionService {
 	public AppTransaction savePayment(String username, String receiverBankAccountNb, Float transactionAmount,
 			String description) throws Exception {
 		AppTransaction appTransaction = new AppTransaction();
-
+		//find appUser per email
 		AppUser appUserByUserName = appUserRepository.findByEmail(username);
+		//find bankAccount per User
 		BankAccount senderBankAccount = bankAccountService.getBankAccountByIban(appUserByUserName.getIban());
+		//find connection appUser by email
 		AppUser appUserConnection = appUserService.findByEmail(receiverBankAccountNb);
+		// find its bankAccount per User
 		BankAccount receiverBankAccount = bankAccountService.getBankAccountByIban(appUserConnection.getIban());
-
+		//calcul fees from transaction amount
 		Float transactionFees = (float) (Math.round(transactionAmount * TransactionConstants.COMMISSION * 100.0)
 				/ 100.0);
-
+		// check validity of amount vs balance
 		if (transactionAmount != null && transactionAmount > 0
 				&& senderBankAccount.getBalance() >= transactionAmount + transactionFees) {
+			//appTransaction set
 			senderBankAccount.setBalance(senderBankAccount.getBalance() - transactionAmount - transactionFees);
 			receiverBankAccount.setBalance(receiverBankAccount.getBalance() + transactionAmount);
 			appTransaction.setAmount(transactionAmount);

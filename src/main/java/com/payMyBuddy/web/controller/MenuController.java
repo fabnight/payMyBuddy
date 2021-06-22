@@ -61,8 +61,7 @@ public class MenuController {
 			AppUser appUserByUserName = appUserRepository.findByEmail(userEmail);
 			model.addAttribute("username", appUserByUserName.getFirstName() + ' ' + appUserByUserName.getLastName());
 			String iban = appUserByUserName.getIban();
-			// BankAccount bankAccountToUpdate =
-			// bankAccountService.getBankAccountByIban(iban);
+
 			model.addAttribute("iban", bankAccount.getIban());
 			String holder = bankAccount.getHolder();
 			model.addAttribute("holder", holder);
@@ -71,8 +70,7 @@ public class MenuController {
 			}
 			if (action.equals("withdraw")) {
 				appTransactionService.savewithdraw(userEmail, appTransaction.getAmount());
-				//Float balance = bankAccount.getBalance();
-				
+
 			}
 			if (action.equals("fund")) {
 				appTransactionService.fundAppAccount(userEmail, appTransaction.getAmount());

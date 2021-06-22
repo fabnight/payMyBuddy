@@ -37,8 +37,7 @@ public class ContactController {
 
 			List<AppUser> contact = appUserService.addConnection(appUser.getEmail());
 			model.addAttribute("contact", contact);
-			// List<AppUser> email = appUserRepository.findByUserContacts(appUser);
-			// model.addAttribute("email", email );
+
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 			e.printStackTrace();
