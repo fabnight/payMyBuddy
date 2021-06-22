@@ -1,3 +1,4 @@
+![diagramme uml paymybuddy](https://user-images.githubusercontent.com/58448176/122891013-79d26300-d344-11eb-973a-9931f89874e8.png)
 # PayMyBuddy Application
 
 Pay My Buddy is a web application coded in Java for purpose to facilitate money transactions between distant persons.
